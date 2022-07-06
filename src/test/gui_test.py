@@ -19,19 +19,20 @@ def main():
     gui = engine.gui.GUI()
     buttons_sprites = []
 
-    for i in range(5):
-        button = engine.gui.Button(pressed_when_released=True, one_time_hover=True)
-        button.position = (30, 30 + i*60)
+    for i in range(1000):
+        for j in range(5):
+            button = engine.gui.Button(pressed_when_released=True, one_time_hover=True)
+            button.position = (20 + i*40, 30 + j*60)
 
-        button_sprite = engine.scene.Sprite(resources.images["chti"], button.position)
-        buttons_sprites.append(button_sprite)
+            button_sprite = engine.scene.Sprite(resources.images["chti"], button.position)
+            buttons_sprites.append(button_sprite)
 
-        actions: list[ValidMouseAction] = ["hover", "pressed", "released"]
-        for action in actions:
-            button.set_rect_from_sprite(button_sprite, action)
-            button.set_callback(resources.sounds["click"].play, action)
+            actions: list[ValidMouseAction] = ["hover", "pressed", "released"]
+            for action in actions:
+                button.set_mask_from_sprite(button_sprite, action)
+                button.set_callback(resources.sounds["click"].play, action)
 
-        gui.add_element(button)
+            gui.add_element(button)
 
     # Main loop
     while loop_handler.is_running():
@@ -55,7 +56,7 @@ def main():
         # endregion
 
         # region Rendering
-        screen.fill((0, 0, 0))
+        screen.fill((255, 255, 255))
         camera.render_fixed_sprites(screen)
 
         for sprite in buttons_sprites:

@@ -83,7 +83,7 @@ class ResourceHandler:
 
         for key in dictionary:
             if type(dictionary[key]) == str:
-                new_img = pygame.image.load(path+dictionary[key]).convert_alpha()
+                new_img = pygame.image.load(path+dictionary[key]).convert()
                 new_img.set_colorkey(self._COLORKEY)
                 receiving_dict[key] = new_img
 
