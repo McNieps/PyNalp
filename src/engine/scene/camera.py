@@ -1,6 +1,6 @@
 from src.engine.scene.scene import Scene
 from src.engine.screen import Screen
-from src.engine.typing import sprite_style
+from src.engine.scene.typing import SpriteStyle
 
 import pygame
 
@@ -66,7 +66,7 @@ class Camera:
         pygame.draw.rect(surface, color, rect, 2)
 
     def _adjusted_sprite_position(self,
-                                  sprite: sprite_style) -> tuple[int, int]:
+                                  sprite: SpriteStyle) -> tuple[int, int]:
         """This method can be used to calculate the position of the sprite on the screen relative to the camera"""
 
         dx = (sprite.position[0] - self.position[0]) * sprite.depth + self._BLIT_OFFSET[0]
@@ -75,7 +75,7 @@ class Camera:
         return int(dx), int(dy)
 
     def draw_sprite(self,
-                    sprite: sprite_style,
+                    sprite: SpriteStyle,
                     surface: pygame.Surface) -> None:
         """This method can be used to draw a sprite into the screen"""
 
@@ -83,8 +83,8 @@ class Camera:
         sprite.draw(surface, self._adjusted_sprite_position(sprite))
 
     def render_fixed_sprites(self,
-                            screen: Screen,
-                            zone: list[int] = None) -> None:
+                             screen: Screen,
+                             zone: list[int] = None) -> None:
         """
         Method used to draw fixed sprite on the screen.
 

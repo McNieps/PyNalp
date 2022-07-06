@@ -1,5 +1,5 @@
 from src.engine.scene.sprites import *
-from src.engine.typing import sprite_style
+from src.engine.scene.typing import SpriteStyle
 
 import pygame
 
@@ -54,7 +54,7 @@ class Scene:
         return pos[0] // self._SCREEN_SIZE[0], pos[1] // self._SCREEN_SIZE[1]
 
     def _get_sprite_clusters(self,
-                             sprite: sprite_style,
+                             sprite: SpriteStyle,
                              rect: Union[pygame.Rect, None]) -> list[tuple[int, int]]:
         """
         Return clusters where the sprite is visible. Assume that the sprite will move!
@@ -102,7 +102,7 @@ class Scene:
         return sprite_clusters
 
     def add_fixed_sprite(self,
-                         sprite: sprite_style) -> None:
+                         sprite: SpriteStyle) -> None:
         """
         Add a fixed sprite to the scene.
 
@@ -113,7 +113,7 @@ class Scene:
         self.add_zoned_sprite(sprite, pygame.Rect(0, 0, 0, 0))
 
     def add_zoned_sprite(self,
-                         sprite: sprite_style,
+                         sprite: SpriteStyle,
                          zone: pygame.Rect) -> None:
         """
         Add a zoned sprite to the scene.
@@ -159,7 +159,7 @@ class Scene:
             self._foreground_clusters[cluster].append(sprite)
 
     def add_mobile_sprite(self,
-                          sprite: sprite_style) -> None:
+                          sprite: SpriteStyle) -> None:
         """
         Add a mobile sprite to the scene.
         A mobile sprite is not subject to clusterization and will only be drawn if it's visible.

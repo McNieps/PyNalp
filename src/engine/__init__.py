@@ -13,6 +13,8 @@ import src.engine.scene as scene
 import src.engine.shaders as shaders
 import src.engine.typing as utils
 
+import pygame
+
 
 # Welcome message!
 print("Hello from the illapsum studio community. https://louis-thuillier.ac-amiens.fr/que-sont-ils-devenus/\n")
@@ -22,6 +24,10 @@ resources = handlers.ResourceHandler("../assets")
 
 # Setting up objects constants
 _utils.init(resources)
+
+# Initializing pygame
+pygame.mixer.pre_init()
+pygame.init()
 
 # Create the window
 screen = _utils.create_screen(resources.data["sys"]["window"]["size"],

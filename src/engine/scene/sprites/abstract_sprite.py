@@ -5,6 +5,7 @@ class AbstractSprite:
     __slots__ = ("position", "depth", "rect", "half_size")
 
     _SCREEN_RECT = pygame.Rect(0, 0, 400, 300)
+    _DISPLAY_RECT = pygame.Rect(0, 0, 400, 300)
     _GLOBAL_DEPTH_THRESHOLD = 0.001
 
     def __init__(self,

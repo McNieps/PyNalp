@@ -47,7 +47,12 @@ def init(resource_handler: handlers.ResourceHandler):
 def init_gui(resource_handler: handlers.ResourceHandler):
     """Init gui objects."""
 
-    pass
+    screen_size = resource_handler.fetch_data(["sys", "window", "size"])
+    shaders_max_size = resource_handler.fetch_data(["sys", "shaders", "max_size"])
+    shaders_enabled = resource_handler.fetch_data(["sys", "shaders", "enabled"])
+
+    if shaders_enabled:
+        gui.Button._DISPLAY_RECT = pygame.Rect(shaders_max_size, shaders_max_size, *screen_size)
 
 
 def init_handlers(resource_handler: handlers.ResourceHandler):
@@ -88,7 +93,10 @@ def init_scene(resource_handler: handlers.ResourceHandler):
 
     # Sprite object (all of them in fact)
     screen_rect = pygame.Rect(0, 0, screen_size[0]+shaders_max_size*2, screen_size[1]+shaders_max_size*2)
+    display_rect = pygame.Rect(shaders_max_size, shaders_max_size, *screen_size)
+
     AbstractSprite._SCREEN_RECT = screen_rect
+    AbstractSprite._DISPLAY_RECT = display_rect
 
     # ShaderSprite object
     scene.ShaderSprite.DISPLAY_RECT = pygame.Rect(0,

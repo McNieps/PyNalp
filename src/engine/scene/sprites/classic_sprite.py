@@ -27,7 +27,34 @@ class Sprite(AbstractSprite):
     def draw(self,
              surface: pygame.Surface,
              position: tuple[int, int]) -> None:
+        """
+        Method used to draw the sprite. Should only be called by the camera.
+        Or you, if you can correctly calculate the position!
 
+        Args:
+            surface: The surface the sprite should be blit on.
+            position: The center where the sprite should be blit.
+        """
         self.rect.center = position
 
         surface.blit(self.surface, self.rect)
+
+    def raw_draw(self,
+                 surface: pygame.Surface,
+                 offset_shaders: bool = True) -> None:
+        """
+        Method used to draw the sprite.
+
+        Args:
+            surface: The surface the sprite should be blit on.
+            offset_shaders: If True, offset the blit pos to account for the shader margin.
+        """
+
+        if offset_shaders:
+            pos = (self.position[0]+self._DISPLAY_RECT[0]-self.half_size[0],
+                   self.position[1]+self._DISPLAY_RECT[1]-self.half_size[1])
+        else:
+            pos = (self.position[0]-self.half_size[0],
+                   self.position[1]-self.half_size[1])
+
+        surface.blit(self.surface, pos)

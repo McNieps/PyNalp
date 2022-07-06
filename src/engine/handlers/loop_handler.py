@@ -20,7 +20,7 @@ class LoopHandler:
         self.delta = 0  # 1 / self.MAX_FPS
 
     def is_running(self):
-        return self.run
+        return self.run and not self.STOP
 
     def stop_loop(self):
         self.run = False

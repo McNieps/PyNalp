@@ -22,30 +22,28 @@ def main():
     space.gravity = (0, 1000)
     space.sleep_time_threshold = 5
     space.idle_speed_threshold = 20
+    space.damping = 0.95
     draw_options = pymunk.pygame_util.DrawOptions(screen)
 
+    # Setting up the sprite of the chti
     chti_pos = (40, 100)
     chti_sprite = engine.scene.AdvancedSprite(resources.images["chti"], chti_pos)
     scene.add_mobile_sprite(chti_sprite)
+
+    # Setting up the body of the chti
     chti_phy = engine.physics.Body(chti_pos)
-
     chti_phy.shape_poly_from_surface(resources.images["chti"], radius=-1, scale=0.5, concave=True, tolerance=2)
-    # chti_phy.shape_rect((50, 50))
-    # chti_phy.shape_circle(30)
-
     chti_phy.set_shapes_attributes(density=1, elasticity=1.05, friction=2)
-
     chti_phy.add_to_space(space)
-    # chti_phy.remove_from_space()
-
     chti_phy.set_velocity((500, 0))
+
+    # Setting up the box
     floor = pymunk.Segment(body=space.static_body, a=(0, 300), b=(400, 300), radius=5)
     ceil = pymunk.Segment(body=space.static_body, a=(0, 0), b=(400, 0), radius=5)
     wall_l = pymunk.Segment(body=space.static_body, a=(0, 0), b=(0, 300), radius=5)
     wall_r = pymunk.Segment(body=space.static_body, a=(400, 0), b=(400, 300), radius=5)
-
     for seg in [floor, ceil, wall_l, wall_r]:
-        seg.elasticity = 1
+        seg.elasticity = 1.05
         seg.friction = 0.7
         space.add(seg)
 

@@ -5,6 +5,9 @@ from random import choice
 
 
 class ResourceHandler:
+    _COLORKEY = (0, 0, 0)
+    _BASE_VOLUME = 0.5
+
     def __init__(self, assets_path: str):
         """
         Class used to access all data
@@ -68,7 +71,7 @@ class ResourceHandler:
         for key in dictionary:
             if type(dictionary[key]) == str:
                 receiving_dict[key] = pygame.mixer.Sound(path+dictionary[key])
-                receiving_dict[key].set_volume(0.05)
+                receiving_dict[key].set_volume(self._BASE_VOLUME)
             else:
                 new_path = path + key + "/"
                 receiving_dict[key] = {}
@@ -80,7 +83,9 @@ class ResourceHandler:
 
         for key in dictionary:
             if type(dictionary[key]) == str:
-                receiving_dict[key] = pygame.image.load(path+dictionary[key]).convert_alpha()
+                new_img = pygame.image.load(path+dictionary[key]).convert_alpha()
+                new_img.set_colorkey(self._COLORKEY)
+                receiving_dict[key] = new_img
 
             else:
                 new_path = path + key + "/"
