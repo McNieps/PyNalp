@@ -1,0 +1,4 @@
+pygame~=2.1.2
+numpy~=1.21.6
+numba~=0.55.1
+pymunk~=6.2.1

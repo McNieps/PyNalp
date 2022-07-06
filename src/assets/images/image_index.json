@@ -1,0 +1,20 @@
+{
+  "frog": "frog.jpg",
+  "space": "space.png",
+  "chti": "chti.png",
+  "bench": "bench.png",
+  "cursors": {
+    "cursor_1": "cursor_1.png",
+    "cursor_1_outline": "cursor_1_outline.png",
+    "cursor_2": "cursor_2.png",
+    "cursor_2_outline": "cursor_2_outline.png",
+    "cursor_3": "cursor_3.png",
+    "cursor_3_outline": "cursor_3_outline.png",
+    "cursor_4": "cursor_4.png",
+    "cursor_4_outline": "cursor_4_outline.png",
+    "cursor_5": "cursor_5.png",
+    "cursor_5_outline": "cursor_5_outline.png",
+    "cursor_6": "cursor_6.png",
+    "cursor_6_outline": "cursor_6_outline.png"
+  }
+}

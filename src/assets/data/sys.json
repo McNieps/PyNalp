@@ -1,0 +1,21 @@
+{
+  "window": {
+    "size": [400, 300],
+    "name": "NalpPylf",
+    "icon": false,
+    "fullscreen": false,
+    "scaled": false,
+    "noframe": false
+  },
+  "video": {
+    "fps": 120,
+    "ifi": 5
+  },
+  "audio": {
+    "number_of_channels": 256
+  },
+  "shaders": {
+    "enabled": true,
+    "max_size": 100
+  }
+}
