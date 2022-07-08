@@ -1,3 +1,12 @@
+"""
+This is just a template. There won't be any use for this script / module in the real game
+Thanks buddy!
+"""
+
+if __name__ == '__main__':
+    import os
+    os.chdir("../")
+
 import src.engine as engine
 
 import pygame
@@ -32,6 +41,12 @@ def template():
 
         # region Rendering
         screen.fill((0, 0, 0))
+
+        screen.blit(resources.write("This is a template",
+                                    (255, 255, 255),
+                                    font_name="Square",
+                                    font_size=45),
+                    (100, 100))
 
         screen.crop_border()
         pygame.display.flip()

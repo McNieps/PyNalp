@@ -1,3 +1,8 @@
+"""
+Hello dear pygamer.
+"""
+
+
 from src.game.states.menu import menu
 
 import pygame

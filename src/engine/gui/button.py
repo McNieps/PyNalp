@@ -4,7 +4,7 @@ from src.engine.typing import SpriteStyle
 
 import pygame
 
-from typing import Callable, Union
+from typing import Callable, Union, Iterable
 
 
 class Button:
@@ -43,13 +43,13 @@ class Button:
 
     def set_rect_from_sprite(self,
                              sprite: SpriteStyle,
-                             action_type: ValidMouseAction) -> pygame.Rect:
+                             actions_type: Union[ValidMouseAction, Iterable[ValidMouseAction]]) -> pygame.Rect:
         """
         Method used to define rect for the action_type.
 
         Args:
             sprite:
-            action_type: "hover", "pressed", "released"
+            actions_type: "hover", "pressed", "released"
 
         Returns:
             The defined rect
@@ -58,15 +58,19 @@ class Button:
         rect = pygame.Rect(0, 0, *sprite.rect.size)
         rect.center = self.position
 
-        match action_type:
-            case "hover":
-                self._hover_body = rect
-            case "pressed":
-                self._pressed_body = rect
-            case "released":
-                self._released_body = rect
-            case _:
-                raise ValueError(f'action type "{action_type}" is not valid.')
+        if type(actions_type) is str:
+            actions_type = [actions_type]
+
+        for action_type in actions_type:
+            match action_type:
+                case "hover":
+                    self._hover_body = rect
+                case "pressed":
+                    self._pressed_body = rect
+                case "released":
+                    self._released_body = rect
+                case _:
+                    raise ValueError(f'action type "{actions_type}" is not valid.')
 
         return rect
 

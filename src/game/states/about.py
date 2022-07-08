@@ -31,7 +31,7 @@ def about():
             if event.type == QUIT:
                 loop_handler.stop_game()
             elif event.type == KEYDOWN and event.key == K_ESCAPE:
-                loop_handler.stop_game()
+                loop_handler.stop_loop()
 
         # endregion
 
@@ -41,7 +41,13 @@ def about():
 
         # region Rendering
         screen.fill((0, 0, 0))
-        screen.blit(resources.write("ABOUT STATE", (75, 25, 150), font_name="Square", font_size=40), (100, 100))
+
+        screen.blit(resources.write("This is about?",
+                                    (255, 255, 255),
+                                    font_name="Square",
+                                    font_size=45),
+                    (100, 100))
+
         screen.crop_border()
         pygame.display.flip()
 

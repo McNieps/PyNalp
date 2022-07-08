@@ -31,7 +31,7 @@ def options():
             if event.type == QUIT:
                 loop_handler.stop_game()
             elif event.type == KEYDOWN and event.key == K_ESCAPE:
-                loop_handler.stop_game()
+                loop_handler.stop_loop()
 
         # endregion
 
@@ -41,6 +41,12 @@ def options():
 
         # region Rendering
         screen.fill((0, 0, 0))
+
+        screen.blit(resources.write("This is the options",
+                                    (255, 255, 255),
+                                    font_name="Square",
+                                    font_size=45),
+                    (100, 100))
 
         screen.crop_border()
         pygame.display.flip()
