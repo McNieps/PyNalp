@@ -16,7 +16,7 @@ def main():
 
     # Add stars to the scene and order them
     utils.create_classic_sprites(scene, resources)
-    frog = engine.scene.Sprite(resources.images["frog"], (0, 0), depth=0.4)
+    frog = engine.scene.Sprite(resources.images["misc"]["frog"], (0, 0), depth=0.4)
     scene.add_fixed_sprite(frog)
     scene.order()
 

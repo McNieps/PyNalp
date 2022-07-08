@@ -64,7 +64,7 @@ def main():
     scene, camera = engine.scene.create_scene_and_camera()
     create_classic_sprites(scene, resources)
     create_shader_sprites(scene, resources)
-    background_sprite = engine.scene.Sprite(surface=resources.images["frog"], position=(0, 0), depth=0)
+    background_sprite = engine.scene.Sprite(surface=resources.images["misc"]["frog"], position=(0, 0), depth=0)
     scene.add_fixed_sprite(background_sprite)
     scene.order()
 
@@ -74,7 +74,7 @@ def main():
     shaders_values = [3, 5, ((10, 10), (0, 0), (-10, -10)), 5]
     shaders_strength = 5
     t = time()
-    resources.shaders["blackhole"].pre_gen_shader_map([500], [i/10 for i in range(100)], verbose=True)
+    # resources.shaders["blackhole"].pre_gen_shader_map([500], [i/10 for i in range(100)])
     print(time()-t)
 
     # Main loop

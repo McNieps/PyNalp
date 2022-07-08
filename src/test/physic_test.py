@@ -27,12 +27,12 @@ def main():
 
     # Setting up the sprite of the chti
     chti_pos = (40, 100)
-    chti_sprite = engine.scene.AdvancedSprite(resources.images["chti"], chti_pos)
+    chti_sprite = engine.scene.AdvancedSprite(resources.images["misc"]["chti"], chti_pos)
     scene.add_mobile_sprite(chti_sprite)
 
     # Setting up the body of the chti
     chti_phy = engine.physics.Body(chti_pos)
-    chti_phy.shape_poly_from_surface(resources.images["chti"], radius=-1, scale=0.5, concave=True, tolerance=2)
+    chti_phy.shape_poly_from_surface(resources.images["misc"]["chti"], radius=-1, scale=0.5, concave=True, tolerance=2)
     chti_phy.set_shapes_attributes(density=1, elasticity=1.05, friction=2)
     chti_phy.add_to_space(space)
     chti_phy.set_velocity((500, 0))

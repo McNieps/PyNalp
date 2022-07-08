@@ -24,7 +24,7 @@ def main():
             button = engine.gui.Button(pressed_when_released=True, one_time_hover=True)
             button.position = (20 + i*40, 30 + j*60)
 
-            button_sprite = engine.scene.Sprite(resources.images["chti"], button.position)
+            button_sprite = engine.scene.Sprite(resources.images["misc"]["chti"], button.position)
             buttons_sprites.append(button_sprite)
 
             actions: list[ValidMouseAction] = ["hover", "pressed", "released"]
