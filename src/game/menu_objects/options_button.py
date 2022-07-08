@@ -16,8 +16,11 @@ def options_button_hover_callback():
 
 button_pos = 70, 90
 
-options_sprite = Sprite(surface=resources.images["menu"]["options_button"],
-                        position=button_pos)
+options_sprite_up = Sprite(surface=resources.images["menu"]["options_up"],
+                           position=button_pos)
+
+options_sprite_down = Sprite(surface=resources.images["menu"]["options_down"],
+                             position=button_pos)
 
 options_button = Button(button_pos)
 
@@ -26,4 +29,9 @@ options_button.set_callback(options_button_released_callback, "released")
 options_button.set_callback(options_button_hover_callback, "hover")
 
 # Setting button rect / mask
-options_button.set_rect_from_sprite(options_sprite, ["released", "hover"])
+options_button.set_rect_from_sprite(options_sprite_up, "hover")
+options_button.set_rect_from_sprite(options_sprite_down, "released")
+
+options_button_dict = {"button": options_button,
+                       "sprite_up": options_sprite_up,
+                       "sprite_down": options_sprite_down}

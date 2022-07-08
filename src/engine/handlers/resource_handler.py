@@ -8,7 +8,7 @@ from typing import Dict, Union
 class ResourceHandler:
     __slots__ = ("path", "images", "sounds", "data", "fonts", "shaders")
 
-    _COLORKEY = (0, 0, 0)
+    # _COLORKEY = (0, 0, 0)
     _BASE_VOLUME = 0.5
 
     def __init__(self, assets_path: str):
@@ -88,8 +88,8 @@ class ResourceHandler:
 
         for key in dictionary:
             if type(dictionary[key]) == str:
-                new_img = pygame.image.load(path+dictionary[key]).convert()
-                new_img.set_colorkey(self._COLORKEY)
+                new_img = pygame.image.load(path+dictionary[key]).convert_alpha()
+                # new_img.set_colorkey(self._COLORKEY)
                 receiving_dict[key] = new_img
 
             else:

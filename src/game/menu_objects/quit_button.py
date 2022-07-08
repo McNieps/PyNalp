@@ -14,8 +14,11 @@ def quit_button_hover_callback():
 
 button_pos = 70, 190
 
-quit_sprite = Sprite(surface=resources.images["menu"]["quit_button"],
-                     position=button_pos)
+quit_sprite_up = Sprite(surface=resources.images["menu"]["quit_up"],
+                        position=button_pos)
+
+quit_sprite_down = Sprite(surface=resources.images["menu"]["quit_down"],
+                          position=button_pos)
 
 quit_button = Button(button_pos)
 
@@ -24,4 +27,9 @@ quit_button.set_callback(quit_button_released_callback, "released")
 quit_button.set_callback(quit_button_hover_callback, "hover")
 
 # Setting button rect / mask
-quit_button.set_rect_from_sprite(quit_sprite, ["released", "hover"])
+quit_button.set_rect_from_sprite(quit_sprite_up, "hover")
+quit_button.set_rect_from_sprite(quit_sprite_down, "released")
+
+quit_button_dict = {"button": quit_button,
+                    "sprite_up": quit_sprite_up,
+                    "sprite_down": quit_sprite_down}

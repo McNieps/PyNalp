@@ -16,8 +16,11 @@ def about_button_hover_callback():
 
 button_pos = 70, 140
 
-about_sprite = Sprite(surface=resources.images["menu"]["about_button"],
-                      position=button_pos)
+about_sprite_up = Sprite(surface=resources.images["menu"]["about_up"],
+                         position=button_pos)
+
+about_sprite_down = Sprite(surface=resources.images["menu"]["about_down"],
+                           position=button_pos)
 
 about_button = Button(button_pos)
 
@@ -26,4 +29,9 @@ about_button.set_callback(about_button_released_callback, "released")
 about_button.set_callback(about_button_hover_callback, "hover")
 
 # Setting button rect / mask
-about_button.set_rect_from_sprite(about_sprite, ["released", "hover"])
+about_button.set_rect_from_sprite(about_sprite_up, "hover")
+about_button.set_rect_from_sprite(about_sprite_down, "released")
+
+about_button_dict = {"button": about_button,
+                     "sprite_up": about_sprite_up,
+                     "sprite_down": about_sprite_down}

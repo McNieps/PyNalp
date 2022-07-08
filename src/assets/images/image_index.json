@@ -19,10 +19,16 @@
     "cursor_6_outline": "cursor_6_outline.png"
   },
   "menu": {
-    "play_button": "play_button.png",
-    "options_button": "options_button.png",
-    "about_button": "about_button.png",
-    "quit_button": "quit_button.png"
+    "play_up": "button_play_up.png",
+    "play_down": "button_play_down.png",
+    "options_up": "button_options_up.png",
+    "options_down": "button_options_down.png",
+    "about_up": "button_about_up.png",
+    "about_down": "button_about_down.png",
+    "quit_up": "button_quit_up.png",
+    "quit_down": "button_quit_down.png",
+    "planet": "planet.png",
+    "warship": "warship.png"
   },
   "space": "space.png"
 }
