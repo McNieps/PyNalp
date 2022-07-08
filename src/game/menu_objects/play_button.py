@@ -5,33 +5,39 @@ from src.engine import resources
 from src.game.states.game import game
 
 
-def play_button_released_callback():
+def hover_callback():
+    resources.play_sound(("click",))
+
+
+def released_callback():
     resources.play_sound(("click",))
     game()
 
 
-def play_button_hover_callback():
+def pressed_callback():
     resources.play_sound(("click",))
 
 
 button_pos = 70, 40
 
-play_sprite_up = Sprite(surface=resources.images["menu"]["play_up"],
-                        position=button_pos)
+sprite_up = Sprite(surface=resources.images["menu"]["play_up"],
+                   position=button_pos)
 
-play_sprite_down = Sprite(surface=resources.images["menu"]["play_down"],
-                          position=button_pos)
+sprite_down = Sprite(surface=resources.images["menu"]["play_down"],
+                     position=button_pos)
 
-play_button = Button(button_pos)
+button = Button(button_pos)
 
 # Setting button callbacks
-play_button.set_callback(play_button_released_callback, "released")
-play_button.set_callback(play_button_hover_callback, "hover")
+button.set_callback(hover_callback, "hover")
+button.set_callback(pressed_callback, "pressed")
+button.set_callback(released_callback, "released")
 
 # Setting button rect / mask
-play_button.set_rect_from_sprite(play_sprite_up, "hover")
-play_button.set_rect_from_sprite(play_sprite_up, "released")
+button.set_rect_from_sprite(sprite_up, "hover")
+button.set_rect_from_sprite(sprite_up, "pressed")
+button.set_rect_from_sprite(sprite_down, "released")
 
-play_button_dict = {"button": play_button,
-                    "sprite_up": play_sprite_up,
-                    "sprite_down": play_sprite_down}
+play_button_dict = {"button": button,
+                    "sprite_up": sprite_up,
+                    "sprite_down": sprite_down}

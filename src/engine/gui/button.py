@@ -13,16 +13,18 @@ class Button:
     def __init__(self,
                  position: tuple[int, int] = (0, 0),
                  one_time_hover: bool = True,
-                 pressed_when_released: bool = False) -> None:
+                 pressed_when_released: bool = True) -> None:
         """
         A button.
 
         Args:
             position: The center of the button relative to the screen.
             one_time_hover: If set to True:
-                The hover callback function will only be called once until the mouse leave the button. Default to True.
+                The hover callback function will only be called once until the mouse leave the button.
+                Default to True.
             pressed_when_released: If set to True:
-                The released callback function will only be called if the button has been pressed. Default to False.
+                The released callback function will only be called if the button has been pressed previously.
+                Default to True.
         """
 
         self.position = position
@@ -32,13 +34,13 @@ class Button:
         self._one_time_hover = one_time_hover
         self._pressed_when_released = pressed_when_released
 
-        self._hover_cb = None
+        self._hover_callback = None
         self._hover_body = pygame.Rect(0, 0, 0, 0)
 
-        self._pressed_cb = None
+        self._pressed_callback = None
         self._pressed_body = pygame.Rect(0, 0, 0, 0)
 
-        self._released_cb = None
+        self._released_callback = None
         self._released_body = pygame.Rect(0, 0, 0, 0)
 
     def set_rect_from_sprite(self,
@@ -135,11 +137,11 @@ class Button:
 
         match action_type:
             case "hover":
-                self._hover_cb = callback
+                self._hover_callback = callback
             case "pressed":
-                self._pressed_cb = callback
+                self._pressed_callback = callback
             case "released":
-                self._released_cb = callback
+                self._released_callback = callback
             case _:
                 raise ValueError(f'action type "{action_type}" is not valid.')
 
@@ -154,7 +156,7 @@ class Button:
 
         if self._check_mouse_collision(mouse_pos=mouse_pos, action_type="pressed"):
             self.pressed = True
-            self._pressed_cb()
+            self._pressed_callback()
 
     def mouse_released(self,
                        mouse_pos: tuple[int, int]) -> None:
@@ -171,14 +173,11 @@ class Button:
             self.pressed = False
             return
 
-        if not self._pressed_when_released:
-            self._released_cb()
+        if self._pressed_when_released and not self.pressed:
             self.pressed = False
             return
 
-        if self.pressed:
-            self._released_cb()
-
+        self._released_callback()
         self.pressed = False
         return
 
@@ -198,10 +197,10 @@ class Button:
                 if self.hovered:
                     return
                 self.hovered = True
-                self._hover_cb()
+                self._hover_callback()
                 return
             else:
-                self._hover_cb()
+                self._hover_callback()
                 self.hovered = True
                 return
 
@@ -214,7 +213,7 @@ class Button:
             return
 
         if self.hovered:
-            self._hover_cb()
+            self._hover_callback()
 
     def _check_mouse_collision(self,
                                mouse_pos: tuple[int, int],
