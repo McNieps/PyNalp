@@ -21,10 +21,7 @@ def create_classic_sprites(_scene: engine.scene.Scene,
         depth = randint(min_d*10000, max_d*10000) / 10000
         raw_pos = randint(-200, 200), randint(-150, 150)
 
-        new_sprite = engine.scene.Sprite(surface=surface,
-                                         pos=pos,
-                                         depth=depth,
-                                         raw_pos=raw_pos)
+        new_sprite = engine.scene.Sprite(surface=surface, position=pos, depth=depth, raw_pos=raw_pos)
 
         _scene.add_fixed_sprite(new_sprite)
 
@@ -67,9 +64,7 @@ def main():
     scene, camera = engine.scene.create_scene_and_camera()
     create_classic_sprites(scene, resources)
     create_shader_sprites(scene, resources)
-    background_sprite = engine.scene.Sprite(surface=resources.images["frog"],
-                                            pos=(0, 0),
-                                            depth=0)
+    background_sprite = engine.scene.Sprite(surface=resources.images["frog"], position=(0, 0), depth=0)
     scene.add_fixed_sprite(background_sprite)
     scene.order()
 

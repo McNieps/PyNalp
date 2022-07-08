@@ -7,7 +7,7 @@ class Sprite(AbstractSprite):
 
     def __init__(self,
                  surface: pygame.Surface,
-                 pos: tuple[float, float],
+                 position: tuple[float, float],
                  depth: float = 1,
                  raw_pos: tuple[float, float] = None) -> None:
         """
@@ -15,12 +15,12 @@ class Sprite(AbstractSprite):
 
         Args:
             surface: the surface of the sprite
-            pos: True position (overlap with camera when camera coords = pos)
+            position: True position (overlap with camera when camera coords = pos)
             depth: Depth of the sprite (0: don't move, 1: move along the plan, 2: move twice as fast, etc.)
             raw_pos: Initial offset from origin
             """
 
-        super().__init__(surface.get_rect().size, pos, depth, raw_pos)
+        super().__init__(surface.get_rect().size, position, depth, raw_pos)
 
         self.surface = surface
 

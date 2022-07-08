@@ -27,10 +27,7 @@ def create_classic_sprites(_scene: engine.scene.Scene,
         depth = randint(min_d*10000, max_d*10000) / 10000
         raw_pos = randint(-200, 200), randint(-150, 150)
 
-        new_sprite = engine.scene.Sprite(surface=surface,
-                                         pos=pos,
-                                         depth=depth,
-                                         raw_pos=raw_pos)
+        new_sprite = engine.scene.Sprite(surface=surface, position=pos, depth=depth, raw_pos=raw_pos)
 
         _scene.add_fixed_sprite(new_sprite)
 
