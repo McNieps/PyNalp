@@ -2,9 +2,12 @@ import pygame
 
 from json import load as json_load
 from random import choice
+from typing import Dict, Union
 
 
 class ResourceHandler:
+    __slots__ = ("path", "images", "sounds", "data", "fonts", "shaders")
+
     _COLORKEY = (0, 0, 0)
     _BASE_VOLUME = 0.5
 
@@ -15,9 +18,10 @@ class ResourceHandler:
         """
 
         self.path = assets_path
-        self.images = {}
-        self.sounds = {}
-        self.data = {}
+        self.images: Dict[str, Union[pygame.Surface, Dict]] = {}
+        self.sounds: Dict[str, Union[pygame.mixer.Sound, Dict]] = {}
+        self.data: Dict[str, Union[Dict, int, float, str]] = {}
+        self.fonts: Dict[Union[str, None], Dict[int, pygame.font.Font]] = {}
 
         self.shaders = {}
 
@@ -29,6 +33,7 @@ class ResourceHandler:
 
     def init(self):
         """init to search images and sounds. Must be called after the window as been initialized"""
+        self.fonts[None] = {10: pygame.font.Font(None, 10)}
         self.load_sounds()
         self.load_images()
 
@@ -119,6 +124,24 @@ class ResourceHandler:
             channel.play(self.fetch_sound(keys))
             return None
         return self.fetch_sound(keys).play()
+
+    def write(self,
+              text: str,
+              color: tuple[int, int, int] = (255, 255, 255),
+              font_name: str = None,
+              font_size: int = 10,
+              antialias: bool = False) -> pygame.Surface:
+
+        if font_name not in self.fonts:
+            self.fonts[font_name] = {font_size: pygame.font.Font(f"{self.path}/fonts/{font_name}.ttf", font_size)}
+
+        elif font_size not in self.fonts[font_name]:
+            if font_name is None:
+                self.fonts[font_name][font_size] = pygame.font.Font(None, font_size)
+            else:
+                self.fonts[font_name][font_size] = pygame.font.Font(f"{self.path}/fonts/{font_name}.ttf", font_size)
+
+        return self.fonts[font_name][font_size].render(text, antialias, color)
 
 
 if __name__ == '__main__':
