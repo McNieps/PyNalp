@@ -35,5 +35,8 @@ screen = _utils.create_screen(resources.data["sys"]["window"]["size"],
                               resources.data["sys"]["window"]["scaled"],
                               resources.data["sys"]["window"]["fullscreen"])
 
+# Created the loop_handler
+loop_handler = handlers.LoopHandler()
+
 # Finish resource_handler initialization
 resources.init()

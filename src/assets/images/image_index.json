@@ -16,5 +16,11 @@
     "cursor_5_outline": "cursor_5_outline.png",
     "cursor_6": "cursor_6.png",
     "cursor_6_outline": "cursor_6_outline.png"
+  },
+  "menu": {
+    "play_button": "play_button.png",
+    "options_button": "options_button.png",
+    "about_button": "about_button.png",
+    "quit_button": "quit_button.png"
   }
 }
