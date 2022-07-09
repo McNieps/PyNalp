@@ -4,7 +4,7 @@
     "name": "PyNalp",
     "icon": false,
     "fullscreen": false,
-    "scaled": false,
+    "scaled": true,
     "noframe": false
   },
   "video": {
@@ -12,6 +12,7 @@
     "ifi": 5
   },
   "audio": {
+    "base_volume": 0.5,
     "number_of_channels": 256
   },
   "shaders": {

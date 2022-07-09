@@ -1,43 +1,22 @@
-from src.engine.gui import Button
-from src.engine.scene import Sprite
-from src.engine import resources
+import src.engine as engine
 
+from src.game.menu_objects.utils import create_button, click_callback
 from src.game.states.options import options
 
-
-def hover_callback():
-    resources.play_sound(("click",))
+import pygame
 
 
-def released_callback():
-    resources.play_sound(("click",))
-    options()
+button_pos = 32, 130
+button_size = engine.resources.images["menu"]["button"].get_size()
 
+surf_up = pygame.Surface(button_size)
+surf_up.set_colorkey((0, 0, 0))
+surf_up.blit(engine.resources.images["menu"]["button"], (0, 0))
+surf_up.blit(engine.resources.images["menu"]["options"], (0, 0))
 
-def pressed_callback():
-    resources.play_sound(("click",))
-
-
-button_pos = 70, 90
-
-sprite_up = Sprite(surface=resources.images["menu"]["options_up"],
-                   position=button_pos)
-
-sprite_down = Sprite(surface=resources.images["menu"]["options_down"],
-                     position=button_pos)
-
-button = Button(button_pos)
-
-# Setting button callbacks
-button.set_callback(hover_callback, "hover")
-button.set_callback(pressed_callback, "pressed")
-button.set_callback(released_callback, "released")
-
-# Setting button rect / mask
-button.set_rect_from_sprite(sprite_up, "hover")
-button.set_rect_from_sprite(sprite_up, "pressed")
-button.set_rect_from_sprite(sprite_down, "released")
-
-options_button_dict = {"button": button,
-                       "sprite_up": sprite_up,
-                       "sprite_down": sprite_down}
+options_button_dict = create_button(button_pos=button_pos,
+                                    surf_up=surf_up,
+                                    surf_down=surf_up,
+                                    hover_callback=click_callback,
+                                    pressed_callback=click_callback,
+                                    released_callback=options)

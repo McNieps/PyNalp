@@ -9,7 +9,7 @@ class ResourceHandler:
     __slots__ = ("path", "images", "sounds", "data", "fonts", "shaders")
 
     # _COLORKEY = (0, 0, 0)
-    _BASE_VOLUME = 0.5
+    _BASE_VOLUME = 0.2
 
     def __init__(self, assets_path: str):
         """
@@ -20,7 +20,7 @@ class ResourceHandler:
         self.path = assets_path
         self.images: Dict[str, Union[pygame.Surface, Dict]] = {}
         self.sounds: Dict[str, Union[pygame.mixer.Sound, Dict]] = {}
-        self.data: Dict[str, Union[Dict, int, float, str]] = {}
+        self.data: Dict[str, Dict[str: Union[Dict, int, float, str]]] = {}
         self.fonts: Dict[Union[str, None], Dict[int, pygame.font.Font]] = {}
 
         self.shaders = {}
@@ -30,6 +30,7 @@ class ResourceHandler:
     def pre_init(self):
         """pre_init to search system variables like screen size"""
         self.load_data()
+        ResourceHandler._BASE_VOLUME = self.data["sys"]["audio"]["base_volume"]
 
     def init(self):
         """init to search images and sounds. Must be called after the window as been initialized"""

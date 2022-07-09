@@ -22,6 +22,8 @@ def template():
     # Initializing the GUI if necessary
     gui = engine.gui.GUI()
 
+    highlight_state = 0
+
     # Main loop
     while loop_handler.is_running():
         delta = loop_handler.limit_and_get_delta()
@@ -32,10 +34,16 @@ def template():
                 loop_handler.stop_game()
             elif event.type == KEYDOWN and event.key == K_ESCAPE:
                 loop_handler.stop_game()
+            elif event.type == MOUSEBUTTONDOWN and event.button == 1:
+                gui.mouse_pressed()
+            elif event.type == MOUSEBUTTONUP and event.button == 1:
+                gui.mouse_released()
 
         # endregion
 
         # region Compute
+        gui.update()
+        highlight_state = (highlight_state + delta*25) % 5
 
         # endregion
 
