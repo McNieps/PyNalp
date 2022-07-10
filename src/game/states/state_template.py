@@ -22,7 +22,7 @@ def template():
     # Initializing the GUI if necessary
     gui = engine.gui.GUI()
 
-    highlight_state = 0
+    anim_var = {"highlight": 0}
 
     # Main loop
     while loop_handler.is_running():
@@ -33,7 +33,7 @@ def template():
             if event.type == QUIT:
                 loop_handler.stop_game()
             elif event.type == KEYDOWN and event.key == K_ESCAPE:
-                loop_handler.stop_game()
+                loop_handler.stop_loop()
             elif event.type == MOUSEBUTTONDOWN and event.button == 1:
                 gui.mouse_pressed()
             elif event.type == MOUSEBUTTONUP and event.button == 1:
@@ -43,7 +43,7 @@ def template():
 
         # region Compute
         gui.update()
-        highlight_state = (highlight_state + delta*25) % 5
+        anim_var["highlight"] = (anim_var["highlight"] + delta*25) % 5
 
         # endregion
 

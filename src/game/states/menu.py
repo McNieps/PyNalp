@@ -14,9 +14,6 @@ import pygame
 
 from pygame.locals import *
 from math import cos, sin
-
-
-# TODO
 from random import randint
 
 
@@ -27,9 +24,8 @@ def menu():
 
     # Initializing the GUI
     button_dicts = [play_button_dict,
-                    options_button_dict,
                     about_button_dict,
-                    quit_button_dict]
+                    quit_button_dict]    # options_button_dict,
 
     gui = engine.gui.GUI()
     for button_dict in button_dicts:
@@ -52,11 +48,11 @@ def menu():
 
     sprites_to_raw_draw = [*stars, menu_planet, menu_clouds, menu_title, menu_warship, menu_reac_1, menu_reac_2]
 
-    ship_angle = 1
-    clouds_angle = 0
-    highlight_state = 0
-    reac_1_state = 1
-    reac_2_state = 3
+    anim_var = {"ship": 1,
+                "clouds": 0,
+                "highlight": 0,
+                "reac_1": 1,
+                "reac_2": 3}
 
     # Main loop
     while loop_handler.is_running():
@@ -77,20 +73,21 @@ def menu():
         # endregion
 
         # region Compute
-        ship_angle = (ship_angle + delta) % 6.283
-        menu_warship.position = int(168+12*cos(ship_angle)), int(105 + 1*sin(ship_angle*3))
+        anim_var["ship"] = (anim_var["ship"] + delta) % 6.283
+        menu_warship.position = int(168+12*cos(anim_var["ship"])), int(105 + 1*sin(anim_var["ship"]*3))
 
-        clouds_angle = (clouds_angle + delta/5) % 6.283
-        menu_clouds.position = 200+2*cos(clouds_angle*3), 285+2*sin(clouds_angle)
+        anim_var["clouds"] = (anim_var["clouds"] + delta/5) % 6.283
+        menu_clouds.position = 200+2*cos(anim_var["clouds"]*3), 285+2*sin(anim_var["clouds"])
 
-        highlight_state = (highlight_state + delta*25) % 5
-        reac_1_state = (reac_1_state + 0.01) % 5
-        reac_2_state = (reac_2_state + 0.01) % 5
+        anim_var["highlight"] = (anim_var["highlight"] + delta*25) % 5
 
+        anim_var["reac_1"] = (anim_var["reac_1"] + 16 * delta) % 5
         menu_reac_1.position = int(menu_warship.position[0] - 175), menu_warship.position[1] - 27
-        menu_reac_1.surface = resources.images["menu"][f"reac_{int(reac_1_state)+1}"]
+        menu_reac_1.surface = resources.images["menu"][f"reac_{int(anim_var['reac_1'])+1}"]
+
+        anim_var["reac_2"] = (anim_var["reac_2"] + 16 * delta) % 5
         menu_reac_2.position = int(menu_warship.position[0] - 175), menu_warship.position[1] + 16
-        menu_reac_2.surface = resources.images["menu"][f"reac_{int(reac_2_state)+1}"]
+        menu_reac_2.surface = resources.images["menu"][f"reac_{int(anim_var['reac_2'])+1}"]
 
         # endregion
 
@@ -104,7 +101,7 @@ def menu():
         for button_dict in button_dicts:
             button_dict["sprite_down"].raw_draw(screen)
             if button_dict["button"].hovered:
-                highlight_sprite(button_dict["sprite_up"], int(highlight_state))
+                highlight_sprite(button_dict["sprite_up"], int(anim_var["highlight"]))
 
         screen.crop_border()
         pygame.display.flip()
