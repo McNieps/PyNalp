@@ -42,21 +42,37 @@
     "reac_5": "reac_5.png"
   },
   "environment": {
+    "galaxy_1": "galaxy_1.png",
+    "galaxy_2": "galaxy_2.png",
+    "galaxy_3": "galaxy_3.png",
     "star_1_1": "star_1_1.png",
     "star_1_2": "star_1_2.png",
     "star_1_3": "star_1_3.png",
+    "star_1_4": "star_1_4.png",
     "star_2_1": "star_2_1.png",
     "star_2_2": "star_2_2.png",
     "star_2_3": "star_2_3.png",
+    "star_2_4": "star_2_4.png",
     "star_3_1": "star_3_1.png",
     "star_3_2": "star_3_2.png",
     "star_3_3": "star_3_3.png",
+    "star_3_4": "star_3_4.png",
     "star_4_1": "star_4_1.png",
     "star_4_2": "star_4_2.png",
-    "star_4_3": "star_4_3.png"
+    "star_4_3": "star_4_3.png",
+    "star_4_4": "star_4_4.png",
+    "star_5_1": "star_5_1.png",
+    "star_5_2": "star_5_2.png",
+    "star_6_1": "star_6_1.png",
+    "star_6_2": "star_6_2.png"
   },
   "sector_selection": {
-    "background": "background.png"
+    "background": "background.png",
+    "pointer": "pointer.png",
+    "selected_1": "selected_1.png",
+    "selected_2": "selected_2.png",
+    "selected_3": "selected_3.png",
+    "holy_chti": "holy_chti.png"
   },
   "space": "space.png"
 }

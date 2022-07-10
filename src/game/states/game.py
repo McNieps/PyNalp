@@ -3,10 +3,12 @@ if __name__ == '__main__':
     os.chdir("../")
 
 from src.game.states.sector_selection import sector_selection
+from src.game.game_objects.map.galaxy import Galaxy
 
 
 def game():
-    sector_selection()
+    galaxy = Galaxy()
+    sector_selection(galaxy)
     # player = Player()
     # galaxy_map = Galaxy(seed=seed)
 
