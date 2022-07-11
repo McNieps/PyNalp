@@ -74,7 +74,10 @@
     "selected_2": "selected_2.png",
     "selected_3": "selected_3.png",
     "selected_4": "selected_4.png",
-    "holy_chti": "holy_chti.png"
+    "holy_chti": "holy_chti.png",
+    "launch_up": "launch_up.png",
+    "launch_down": "launch_down.png",
+    "launch_locked": "launch_locked.png"
   },
   "player": {
     "90L": "90L.png"

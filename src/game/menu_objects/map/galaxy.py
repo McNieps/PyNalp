@@ -47,7 +47,7 @@ class Galaxy:
 
         # Display attributes
         self.surface = pygame.Surface((236, 193))
-        self._rect = pygame.Rect(17, 40, 236, 193)
+        self.rect = pygame.Rect(16, 16, 236, 193)
         self._center = [118, 97]
         self._angle_x = 0
         self._angle_y = math.radians(30)
@@ -89,10 +89,10 @@ class Galaxy:
             self._center[1] = int((self._center[1] - 97) * zoom + 97)
 
     def click(self, mouse_pos: tuple[int, int]):
-        if not self._rect.collidepoint(*mouse_pos):
+        if not self.rect.collidepoint(*mouse_pos):
             return
 
-        relative_pos = mouse_pos[0] - self._rect.left, mouse_pos[1] - self._rect.top
+        relative_pos = mouse_pos[0] - self.rect.left, mouse_pos[1] - self.rect.top
 
         for sector in self.current_sector.lead_to:
             if sector.rect.collidepoint(*relative_pos):
@@ -104,11 +104,11 @@ class Galaxy:
                     engine.resources.play_sound(["click"])
 
     def hover(self, mouse_pos: tuple[int, int]):
-        if not self._rect.collidepoint(*mouse_pos):
+        if not self.rect.collidepoint(*mouse_pos):
             self.hovered_sector = None
             return
 
-        relative_pos = mouse_pos[0] - self._rect.left, mouse_pos[1] - self._rect.top
+        relative_pos = mouse_pos[0] - self.rect.left, mouse_pos[1] - self.rect.top
 
         sector_to_inform = None
         for sector in self.sectors:
@@ -232,17 +232,18 @@ class Galaxy:
 
                 self.sectors.append(sector)
 
-        # Connecting sectors togethers
-        for i in self._leading_graph:
-            for dest_index in self._leading_graph[i]:
-                self.sectors[i].add_destination(self.sectors[dest_index])
-
         # Adding super secret sector
         chti_sprite = engine.scene.Sprite(engine.resources.images["sector_selection"]["holy_chti"], (0, 0))
         chti_star = Star((10000, 10000, 5000), chti_sprite)
         chti_sector = Sector(666, 666, chti_star)
         self.sectors.append(chti_sector)
 
+        # Connecting sectors together
+        for i in self._leading_graph:
+            for dest_index in self._leading_graph[i]:
+                self.sectors[i].add_destination(self.sectors[dest_index])
+
+        # Setting starting sector
         self.current_sector = self.sectors[0]
 
     def _draw_line_between_sector(self,

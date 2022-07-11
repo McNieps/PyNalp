@@ -9,10 +9,11 @@ if __name__ == '__main__':
 
 import src.engine as engine
 
+from src.game.menu_objects.map import Galaxy
+
 import pygame
 import math
 
-from src.game.menu_objects.map import Galaxy
 from pygame.locals import *
 
 
@@ -21,10 +22,35 @@ def sector_selection(galaxy: Galaxy):
     screen = engine.screen
     loop_handler = engine.loop_handler
     gui = engine.gui.GUI()
-
     galaxy_surf = galaxy.surface
+    galaxy_pos = galaxy.rect[0] + 100, galaxy.rect[1] + 100
     background = engine.scene.Sprite(resources.images["sector_selection"]["background"], (200, 150))
     sprites_to_raw_draw = [background]
+
+    # Create button
+    button_pos = 330, 259
+
+    def pressed_callback():
+        if galaxy.selected_sector is not None:
+            engine.resources.play_sound(("click",))
+
+    def released_callback():
+        if galaxy.selected_sector is not None:
+            loop_handler.stop_loop()
+
+    button_up = engine.scene.Sprite(surface=engine.resources.images["sector_selection"]["launch_up"],
+                                    position=button_pos)
+    button_down = engine.scene.Sprite(surface=engine.resources.images["sector_selection"]["launch_down"],
+                                      position=button_pos)
+    button_locked = engine.scene.Sprite(surface=engine.resources.images["sector_selection"]["launch_locked"],
+                                        position=button_pos)
+    button = engine.gui.Button(button_pos)
+    button.set_mask_from_sprite(button_up, "pressed")
+    button.set_mask_from_sprite(button_down, "released")
+    button.set_callback(pressed_callback, "pressed")
+    button.set_callback(released_callback, "released")
+
+    gui.add_element(button)
 
     # Animation variables
     anim_var = {"highlight": 0,
@@ -114,7 +140,14 @@ def sector_selection(galaxy: Galaxy):
         can_hover = not (key_pressed[K_LSHIFT] or key_pressed[K_LCTRL])
         galaxy.draw(can_hover, mouse_pos)
 
-        screen.blit(galaxy_surf, (117, 140))
+        screen.blit(galaxy_surf, galaxy_pos)
+
+        if galaxy.selected_sector is None:
+            button_locked.raw_draw(screen)
+        elif button.pressed:
+            button_down.raw_draw(screen)
+        else:
+            button_up.raw_draw(screen)
 
         screen.crop_border()
         pygame.display.flip()
