@@ -18,7 +18,7 @@ def create_classic_sprites(_scene: engine.scene.Scene,
 
     # Adding background image
     if background_image:
-        _scene.add_fixed_sprite(engine.scene.Sprite(_resources.images["space"], (0, 0), 0))
+        _scene.add_fixed_sprite(engine.scene.Sprite(_resources.images["misc"]["space"], (0, 0), 0))
 
     # Adding small stars here and there...
     for _ in range(sprite_nb):

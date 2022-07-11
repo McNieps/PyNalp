@@ -134,7 +134,7 @@ class Galaxy:
         self._scale = 1
 
     def _generate_background(self):
-        for i in range(100):
+        for i in range(200):
             _type = random.randint(1, 4)
             _color = random.randint(1, 3)
             star_surf = engine.resources.images["environment"][f"star_{_type}_{_color}"]
@@ -196,7 +196,6 @@ class Galaxy:
                 self._stars.append(Star(star_pos, star_sprite))
 
     def _generate_sectors(self):
-
         angles = np.geomspace(10 + math.radians(25), 10 + self._max_angle, len(self._sectors_choices))
         num = -1
         for sector_depth in range(len(self._sectors_choices)):
@@ -205,8 +204,8 @@ class Galaxy:
 
                 # Sector position
                 angle = self._max_angle - (angles[sector_depth] - 10)
-                x = angle * math.cos(angle) * self._xy_scale  # + random.gauss(0, 8)
-                y = angle * math.sin(angle) * self._xy_scale  # + random.gauss(0, 8)
+                x = angle * math.cos(angle) * self._xy_scale
+                y = angle * math.sin(angle) * self._xy_scale
                 z = random.gauss(0, 3)
 
                 # Offsetting sector
@@ -259,7 +258,6 @@ class Galaxy:
         pygame.draw.line(self.surface, color, start_pos, end_pos, width)
 
     def draw_background(self):
-        self.surface.fill((13, 43, 69))
         for bg_star in self._bg_stars:
             bg_star.raw_draw(self.surface, False)
 
@@ -294,7 +292,7 @@ class Galaxy:
                 self._draw_line_between_sector(self.selected_sector, dest_sector, (141, 105, 122), width=4)
                 self._draw_line_between_sector(self.selected_sector, dest_sector, (255, 236, 214), width=2)
 
-    def draw_effects(self):
+    def draw_indicators(self):
 
         # Draw current position indicator
         self.position_sprite.position = (self.current_sector.position[0],
@@ -308,3 +306,28 @@ class Galaxy:
                                                                         self.selected_sector.position[1] - 17)
 
             self.selection_sprites[int(self._select_state)].raw_draw(self.surface, False)
+
+    def draw(self, can_hover: bool, mouse_pos: tuple[int, int]):
+        self.surface.fill((13, 43, 69))
+
+        # Drawing blurred background and galaxy
+        blur_kernel_radius = 5
+        self.draw_galaxy()
+        self.draw_background()
+        engine.shaders.BlurShader.compute(self.surface, blur_kernel_radius)
+        engine.shaders.BlurShader.compute(self.surface, blur_kernel_radius)
+
+        # Drawing sharp background and galaxy
+        self.draw_background()
+        self.draw_galaxy()
+
+        self.draw_accessible()      # This is used to update all sector pos (lol)
+
+        self.draw_all_paths()       # Show all paths
+        if can_hover:
+            self.hover(mouse_pos)   # Show path of hovered sector (easier to see that draw_all_paths
+        self.draw_possible_paths()  # Draw current possibles paths and selected sector possibles paths
+
+        self.draw_accessible()      # Draw sectors
+
+        self.draw_indicators()

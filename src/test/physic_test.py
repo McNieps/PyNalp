@@ -85,8 +85,8 @@ def main():
         camera.render_fixed_sprites(screen, zone=[-1, 0, 1])
         draw_options.transform = pymunk.Transform.translation(-camera.x + 300, -camera.y + 250)
         space.debug_draw(draw_options)
-        camera.render_mobile_sprites(screen)
         camera.render_fixed_sprites(screen, zone=[2])
+        camera.render_mobile_sprites(screen)
 
         # camera.draw_active_cluster(screen, (255, 255, 255))
         screen.crop_border()

@@ -103,7 +103,7 @@ def sector_selection(galaxy: Galaxy):
         gui.update()
 
         anim_var["highlight"] = (anim_var["highlight"] + delta*25) % 5
-        galaxy.rotate(math.radians(5)*delta, 0)
+        galaxy.rotate(math.radians(1)*delta, 0)
 
         # endregion
 
@@ -111,25 +111,8 @@ def sector_selection(galaxy: Galaxy):
         for sprite in sprites_to_raw_draw:
             sprite.raw_draw(screen)
 
-        galaxy.draw_background()
-        galaxy.draw_galaxy()
-
-        # Applying shader for 'bloom'. Comment this code if slow
-        blur_strength = 16
-        engine.shaders.BlurShader.compute(galaxy_surf, blur_strength)
-        engine.shaders.BlurShader.compute(galaxy_surf, blur_strength)
-        galaxy.draw_galaxy()
-        # Comment till here.
-
-        galaxy.draw_all_paths()
-
-        if not (key_pressed[K_LCTRL] or key_pressed[K_LSHIFT]):
-            galaxy.hover(mouse_pos)
-
-        galaxy.draw_possible_paths()    # Draw current possibles paths and selected sector possibles paths
-        galaxy.draw_accessible()        # Draw sectors
-
-        galaxy.draw_effects()
+        can_hover = not (key_pressed[K_LSHIFT] or key_pressed[K_LCTRL])
+        galaxy.draw(can_hover, mouse_pos)
 
         screen.blit(galaxy_surf, (117, 140))
 

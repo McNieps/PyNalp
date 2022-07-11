@@ -2,7 +2,8 @@
   "misc": {
     "chti": "chti.png",
     "bench": "bench.png",
-    "frog": "frog.jpg"
+    "frog": "frog.jpg",
+    "space": "space.png"
   },
   "cursors": {
     "cursor_1": "cursor_1.png",
@@ -75,5 +76,7 @@
     "selected_4": "selected_4.png",
     "holy_chti": "holy_chti.png"
   },
-  "space": "space.png"
+  "player": {
+    "90L": "90L.png"
+  }
 }

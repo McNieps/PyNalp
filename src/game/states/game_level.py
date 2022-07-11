@@ -1,8 +1,3 @@
-"""
-This is just a template. There won't be any use for this script / module in the real game
-Thanks buddy!
-"""
-
 if __name__ == '__main__':
     import os
     os.chdir("../")
@@ -14,9 +9,11 @@ import pygame
 from pygame.locals import *
 
 
-def template():
+def game_level(player, level):
     resources = engine.resources
     screen = engine.screen
+    scene, camera = engine.scene.utils.create_scene_and_camera()
+
     loop_handler = engine.loop_handler
 
     # Initializing the GUI if necessary
@@ -48,9 +45,10 @@ def template():
         # endregion
 
         # region Rendering
-        screen.fill((0, 0, 0))
-
-        screen.blit(resources.write("This is a template",
+        screen.fill((13, 43, 69))
+        camera.render_fixed_sprites(screen)
+        camera.render_mobile_sprites(screen)
+        screen.blit(resources.write("This is a level",
                                     (255, 255, 255),
                                     font_name="Square",
                                     font_size=45),
@@ -61,5 +59,5 @@ def template():
 
 
 if __name__ == '__main__':
-    template()
+    game_level(5, 5)
     pygame.quit()

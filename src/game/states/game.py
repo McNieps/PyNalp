@@ -3,6 +3,7 @@ if __name__ == '__main__':
     os.chdir("../")
 
 from src.game.states.sector_selection import sector_selection
+from src.game.states.game_level import game_level
 from src.game.menu_objects.map.galaxy import Galaxy
 
 
@@ -17,7 +18,7 @@ def game():
 
     # while win and not current_sector.final:
     #     sector_selection(galaxy_map)
-    #     win = game_level(player, galaxy.current_sector)
+    #     win = game_level(player, galaxy.current_sector.level)
 
     # if not win:
     #     game_over_screen()
