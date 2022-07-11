@@ -1,7 +1,7 @@
 import src.engine as engine
 
-from src.game.game_objects.map.star import Star
-from src.game.game_objects.map.sector import Sector
+from src.game.menu_objects.map.star import Star
+from src.game.menu_objects.map.sector import Sector
 
 import pygame
 import math
@@ -23,10 +23,14 @@ class Galaxy:
         self._xy_scale = self._size / self._max_angle
         self._stars = []
 
-        # Sectors attributes
+        # Sector attributes
         self.sectors: list[Sector] = []
         self._sectors_choices = [1, 2, 3, 3, 2, 1]
         self._space_between_sector = 20
+        self._available_sectors: list[Sector] = self.sectors
+        self.selected_sector = None
+        self.hovered_sector = None
+        self.current_sector = None
 
         self._leading_graph = {0: (1, 2),   # I know there are better ways to do this.
                                1: (3, 4),
@@ -43,15 +47,21 @@ class Galaxy:
 
         # Display attributes
         self.surface = pygame.Surface((236, 193))
+        self._rect = pygame.Rect(17, 40, 236, 193)
         self._center = [118, 97]
         self._angle_x = 0
         self._angle_y = math.radians(30)
         self._scale = 1
         self._select_state = 0
+        self._bg_stars = []
 
-        self.selected_sector = None
-        self.selection_sprites = [engine.scene.Sprite(engine.resources.images["sector_selection"][f"selected_{i}"], (0, 0)) for i in range(1, 4)]
+        # GUI
+        self.selection_sprites = [engine.scene.Sprite(engine.resources.images["sector_selection"][f"selected_{i}"],
+                                                      (0, 0)) for i in range(1, 5)]
+        self.position_sprite = engine.scene.Sprite(engine.resources.images["sector_selection"]["pointer"], (0, 0))
 
+        # Generate
+        self._generate_background()
         self._generate_galaxy()
         self._generate_sectors()
 
@@ -75,8 +85,61 @@ class Galaxy:
         self._scale *= zoom
 
         if keep_centered:
-            self._center[0] = (self._center[0] - 118) * zoom + 118
-            self._center[1] = (self._center[1] - 97) * zoom + 97
+            self._center[0] = int((self._center[0] - 118) * zoom + 118)
+            self._center[1] = int((self._center[1] - 97) * zoom + 97)
+
+    def click(self, mouse_pos: tuple[int, int]):
+        if not self._rect.collidepoint(*mouse_pos):
+            return
+
+        relative_pos = mouse_pos[0] - self._rect.left, mouse_pos[1] - self._rect.top
+
+        for sector in self.current_sector.lead_to:
+            if sector.rect.collidepoint(*relative_pos):
+
+                if sector is self.selected_sector:
+                    self.selected_sector = None
+                else:
+                    self.selected_sector = sector
+                    engine.resources.play_sound(["click"])
+
+    def hover(self, mouse_pos: tuple[int, int]):
+        if not self._rect.collidepoint(*mouse_pos):
+            self.hovered_sector = None
+            return
+
+        relative_pos = mouse_pos[0] - self._rect.left, mouse_pos[1] - self._rect.top
+
+        sector_to_inform = None
+        for sector in self.sectors:
+            if sector not in [self.current_sector, self.selected_sector] and sector.rect.collidepoint(*relative_pos):
+                sector_to_inform = sector
+
+        if not sector_to_inform:
+            self.hovered_sector = None
+            return
+
+        if sector_to_inform is not self.hovered_sector:
+            engine.resources.play_sound(("click",))
+
+        for dest_sector in sector_to_inform.lead_to:
+            self._draw_line_between_sector(sector_to_inform, dest_sector, (141, 105, 122), width=4)
+            self._draw_line_between_sector(sector_to_inform, dest_sector, (255, 236, 214), width=2)
+        self.hovered_sector = sector_to_inform
+
+    def reset(self):
+        self._center = [118, 97]
+        self._angle_x = 0
+        self._angle_y = math.radians(30)
+        self._scale = 1
+
+    def _generate_background(self):
+        for i in range(100):
+            _type = random.randint(1, 4)
+            _color = random.randint(1, 3)
+            star_surf = engine.resources.images["environment"][f"star_{_type}_{_color}"]
+            star_pos = random.randint(-5, 236), random.randint(-5, 193)
+            self._bg_stars.append(engine.scene.Sprite(star_surf, star_pos))
 
     def _generate_galaxy(self):
         self._stars = []
@@ -132,10 +195,6 @@ class Galaxy:
                 star_sprite = engine.scene.Sprite(star_surf, (0, 0))
                 self._stars.append(Star(star_pos, star_sprite))
 
-        chti_sprite = engine.scene.Sprite(engine.resources.images["sector_selection"]["holy_chti"], (0, 0))
-        chti_star = Star((10000, 10000, 5000), chti_sprite)
-        self._stars.append(chti_star)
-
     def _generate_sectors(self):
 
         angles = np.geomspace(10 + math.radians(25), 10 + self._max_angle, len(self._sectors_choices))
@@ -148,7 +207,7 @@ class Galaxy:
                 angle = self._max_angle - (angles[sector_depth] - 10)
                 x = angle * math.cos(angle) * self._xy_scale  # + random.gauss(0, 8)
                 y = angle * math.sin(angle) * self._xy_scale  # + random.gauss(0, 8)
-                z = 0
+                z = random.gauss(0, 3)
 
                 # Offsetting sector
                 if self._sectors_choices[sector_depth] > 1:
@@ -174,44 +233,78 @@ class Galaxy:
 
                 self.sectors.append(sector)
 
+        # Connecting sectors togethers
         for i in self._leading_graph:
             for dest_index in self._leading_graph[i]:
                 self.sectors[i].add_destination(self.sectors[dest_index])
 
-    def draw(self) -> pygame.Surface:
+        # Adding super secret sector
+        chti_sprite = engine.scene.Sprite(engine.resources.images["sector_selection"]["holy_chti"], (0, 0))
+        chti_star = Star((10000, 10000, 5000), chti_sprite)
+        chti_sector = Sector(666, 666, chti_star)
+        self.sectors.append(chti_sector)
 
-        random.seed(50)
-        for i in range(100):
-            color = random.randint(1, 3)
-            posx, posy = random.randint(-5, 236), random.randint(-5, 193)
-            self.surface.blit(engine.resources.images["environment"][f"star_{random.randint(1, 4)}_{color}"], (posx, posy))
+        self.current_sector = self.sectors[0]
 
+    def _draw_line_between_sector(self,
+                                  sector_1: Sector,
+                                  sector_2: Sector,
+                                  color: tuple[int, int, int],
+                                  width: int = 2,
+                                  offset: tuple[int, int] = (0, 0)):
+
+        start_pos = tuple([int(sector_1.position[i] + offset[i]) for i in range(2)])
+        end_pos = tuple([int(sector_2.position[i] + offset[i]) for i in range(2)])
+
+        pygame.draw.line(self.surface, color, start_pos, end_pos, width)
+
+    def draw_background(self):
+        self.surface.fill((13, 43, 69))
+        for bg_star in self._bg_stars:
+            bg_star.raw_draw(self.surface, False)
+
+    def draw_galaxy(self):
         cos_x, sin_x = math.cos(self._angle_x), math.sin(self._angle_x)
         cos_y, sin_y = math.cos(self._angle_y), math.sin(self._angle_y)
 
         for star in self._stars:
             star.draw(self._center, self._scale, cos_x, sin_x, cos_y, sin_y, self.surface)
 
-        return self.surface
-
+    # TODO rework this
     def draw_accessible(self):
         cos_x, sin_x = math.cos(self._angle_x), math.sin(self._angle_x)
         cos_y, sin_y = math.cos(self._angle_y), math.sin(self._angle_y)
 
         for sector in self.sectors:
-            sector.draw(tuple(self._center), self._scale, cos_x, sin_x, cos_y, sin_y, self.surface)
+            sector.draw(self._center, self._scale, cos_x, sin_x, cos_y, sin_y, self.surface)
 
-    def draw_paths(self):
-        for base_sector in self.sectors:
-            for dest_sector in base_sector.lead_to:
-                start_pos = tuple([int(base_sector.position[i]) for i in range(2)])
-                end_pos = tuple([int(dest_sector.position[i]) for i in range(2)])
+    def draw_all_paths(self):
+        for sector in self.sectors:
+            for dest_sector in sector.lead_to:
+                self._draw_line_between_sector(sector, dest_sector, (141, 105, 122), width=3)
+                self._draw_line_between_sector(sector, dest_sector, (255, 236, 214), width=1)
 
-                pygame.draw.line(self.surface, (255, 236, 214), start_pos, end_pos, 2)
+    def draw_possible_paths(self):
+        for dest_sector in self.current_sector.lead_to:
+            self._draw_line_between_sector(self.current_sector, dest_sector, (141, 105, 122), width=5)
+            self._draw_line_between_sector(self.current_sector, dest_sector, (255, 236, 214), width=3)
+
+        if self.selected_sector:
+            for dest_sector in self.selected_sector.lead_to:
+                self._draw_line_between_sector(self.selected_sector, dest_sector, (141, 105, 122), width=4)
+                self._draw_line_between_sector(self.selected_sector, dest_sector, (255, 236, 214), width=2)
 
     def draw_effects(self):
-        self.selected_sector = self.sectors[0]
-        self._select_state = (self._select_state + 0.1) % 3
+
+        # Draw current position indicator
+        self.position_sprite.position = (self.current_sector.position[0],
+                                         self.current_sector.position[1] - 17)
+        self.position_sprite.raw_draw(self.surface, False)
+
+        # Draw selected sector indicator
+        self._select_state = (self._select_state + 0.1) % 4
         if self.selected_sector is not None:
-            self.selection_sprites[int(self._select_state)].position = self.sectors[0].position[0], self.sectors[0].position[1] - 10
+            self.selection_sprites[int(self._select_state)].position = (self.selected_sector.position[0],
+                                                                        self.selected_sector.position[1] - 17)
+
             self.selection_sprites[int(self._select_state)].raw_draw(self.surface, False)

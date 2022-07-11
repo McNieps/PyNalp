@@ -2,8 +2,6 @@ import src.engine as engine
 
 import pygame
 
-from typing import Iterable
-
 
 class Star:
     def __init__(self,
@@ -15,7 +13,7 @@ class Star:
         self.rect = sprite.rect
 
     def draw(self,
-             center: Iterable[int],
+             center: list[int],
              scale: float,
              cos_x: float,
              sin_x: float,

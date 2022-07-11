@@ -9,8 +9,8 @@ if __name__ == '__main__':
 
 import src.engine as engine
 
-from src.game.menu_objects.return_button import return_button_dict
-from src.game.menu_objects.utils import highlight_sprite
+from src.game.menu_objects.buttons.return_button import return_button_dict
+from src.game.menu_objects.buttons.utils import highlight_sprite
 
 import pygame
 

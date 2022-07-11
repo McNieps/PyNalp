@@ -1,6 +1,6 @@
 import src.engine as engine
 
-from src.game.menu_objects.utils import create_button, click_callback
+from src.game.menu_objects.buttons.utils import create_button, click_callback
 from src.game.states.about import about
 
 import pygame

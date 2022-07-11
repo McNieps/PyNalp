@@ -4,7 +4,7 @@
     "name": "PyNalp",
     "icon": false,
     "fullscreen": false,
-    "scaled": true,
+    "scaled": false,
     "noframe": false
   },
   "video": {

@@ -12,7 +12,7 @@ import src.engine as engine
 import pygame
 import math
 
-from src.game.game_objects.map.galaxy import Galaxy
+from src.game.menu_objects.map import Galaxy
 from pygame.locals import *
 
 
@@ -20,15 +20,15 @@ def sector_selection(galaxy: Galaxy):
     resources = engine.resources
     screen = engine.screen
     loop_handler = engine.loop_handler
-
-    # Initializing the GUI if necessary
     gui = engine.gui.GUI()
 
+    galaxy_surf = galaxy.surface
     background = engine.scene.Sprite(resources.images["sector_selection"]["background"], (200, 150))
     sprites_to_raw_draw = [background]
 
     # Animation variables
-    anim_var = {"highlight": 0}
+    anim_var = {"highlight": 0,
+                "position": 5}
 
     mouse_pos = pygame.mouse.get_pos()
     map_rect = pygame.Rect(17, 40, 236, 193)
@@ -41,6 +41,7 @@ def sector_selection(galaxy: Galaxy):
         # region Events
         key_pressed = pygame.key.get_pressed()
         mouse_pressed = pygame.mouse.get_pressed(3)
+        mouse_just_pressed = False
         mouse_in_map = map_rect.collidepoint(*pygame.mouse.get_pos())
 
         for event in pygame.event.get():
@@ -50,9 +51,14 @@ def sector_selection(galaxy: Galaxy):
             elif event.type == KEYDOWN:
                 if event.key == K_ESCAPE:
                     loop_handler.stop_loop()
+                if event.key == K_r:
+                    galaxy.reset()
+                if event.key == K_RETURN and galaxy.selected_sector is not None:
+                    loop_handler.stop_loop()
 
             elif event.type == MOUSEBUTTONDOWN and event.button == 1:
                 gui.mouse_pressed()
+                mouse_just_pressed = True
 
             elif event.type == MOUSEBUTTONUP and event.button == 1:
                 gui.mouse_released()
@@ -74,7 +80,7 @@ def sector_selection(galaxy: Galaxy):
             galaxy.rotate(math.radians(dx), math.radians(dy))
             mouse_pos = new_mouse_pos
 
-        elif mouse_pressed[0]:
+        elif key_pressed[K_LSHIFT] and mouse_pressed[0]:
             new_mouse_pos = pygame.mouse.get_pos()
             dx, dy = mouse_pos[0] - new_mouse_pos[0], mouse_pos[1] - new_mouse_pos[1]
             galaxy.move(dx, dy, False)
@@ -87,10 +93,15 @@ def sector_selection(galaxy: Galaxy):
 
         else:
             mouse_pos = pygame.mouse.get_pos()
+
         # endregion
 
         # region Compute
+        if mouse_just_pressed and not (key_pressed[K_LCTRL] or key_pressed[K_LSHIFT]):
+            galaxy.click(mouse_pos)
+
         gui.update()
+
         anim_var["highlight"] = (anim_var["highlight"] + delta*25) % 5
         galaxy.rotate(math.radians(5)*delta, 0)
 
@@ -100,18 +111,24 @@ def sector_selection(galaxy: Galaxy):
         for sprite in sprites_to_raw_draw:
             sprite.raw_draw(screen)
 
-        galaxy.surface.fill((13, 43, 69))
-        # galaxy.surface.fill((255, 236, 214))
+        galaxy.draw_background()
+        galaxy.draw_galaxy()
 
-        galaxy_surf = galaxy.draw()
-        blur_strength = 20
+        # Applying shader for 'bloom'. Comment this code if slow
+        blur_strength = 16
         engine.shaders.BlurShader.compute(galaxy_surf, blur_strength)
         engine.shaders.BlurShader.compute(galaxy_surf, blur_strength)
+        galaxy.draw_galaxy()
+        # Comment till here.
 
-        galaxy.draw()
-        galaxy.draw_accessible()
-        galaxy.draw_paths()
-        galaxy.draw_accessible()
+        galaxy.draw_all_paths()
+
+        if not (key_pressed[K_LCTRL] or key_pressed[K_LSHIFT]):
+            galaxy.hover(mouse_pos)
+
+        galaxy.draw_possible_paths()    # Draw current possibles paths and selected sector possibles paths
+        galaxy.draw_accessible()        # Draw sectors
+
         galaxy.draw_effects()
 
         screen.blit(galaxy_surf, (117, 140))
@@ -119,8 +136,11 @@ def sector_selection(galaxy: Galaxy):
         screen.crop_border()
         pygame.display.flip()
 
+    galaxy.current_sector = galaxy.selected_sector
+    galaxy.selected_sector = None
+
 
 if __name__ == '__main__':
     _galaxy = Galaxy()
-    sector_selection(_galaxy)
+    print(sector_selection(_galaxy))
     pygame.quit()

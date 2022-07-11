@@ -4,11 +4,11 @@ if __name__ == '__main__':
 
 import src.engine as engine
 
-from src.game.menu_objects import play_button_dict
-from src.game.menu_objects import options_button_dict
-from src.game.menu_objects import about_button_dict
-from src.game.menu_objects import quit_button_dict
-from src.game.menu_objects import highlight_sprite
+from src.game.menu_objects.buttons import play_button_dict
+from src.game.menu_objects.buttons import options_button_dict
+from src.game.menu_objects.buttons import about_button_dict
+from src.game.menu_objects.buttons import quit_button_dict
+from src.game.menu_objects.buttons import highlight_sprite
 
 import pygame
 
@@ -36,7 +36,9 @@ def menu():
     for star_type, nb in enumerate([50, 50, 50, 50]):
         for _ in range(nb):
             pos = randint(0, 400), randint(0, 260)
-            star_sprite = engine.scene.Sprite(engine.resources.images["environment"][f"star_{star_type+1}_{randint(1, 3)}"], pos)
+            star_sprite = engine.scene.Sprite(
+                engine.resources.images["environment"][f"star_{star_type+1}_{randint(1, 3)}"], pos)
+
             stars.append(star_sprite)
 
     menu_warship = engine.scene.Sprite(resources.images["menu"]["warship"], (200, 150))
