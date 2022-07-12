@@ -38,11 +38,14 @@ class Player:
 
         # Position and velocity
         self._position = [0, 0]
+        self._speed = 125
+
+        # If broken
         self._velocity = [0, 0]
-        self._damping = 0.99
+        self._damping = 0.2
 
         # Sprite
-        self.sprite = engine.scene.AdvancedSprite([engine.resources.images["player"]["90L"]], (0, 0))
+        self.sprite = engine.scene.AdvancedSprite([engine.resources.images["player"]["chti_saucer"]], (0, 0))
         self.sprite.position = self._position
 
     @property
@@ -53,6 +56,10 @@ class Player:
     def position(self, value):
         self._position[0] = value[0]
         self._position[1] = value[1]
+
+    def reset(self):
+        self.position = (0, 0)
+        self._velocity = [0, 0]
 
     def handle_key_pressed(self, key_pressed: list[int], delta: float):
         vec = pygame.Vector2(0, 0)
@@ -71,8 +78,15 @@ class Player:
             vec.normalize_ip()
             vec *= delta
 
-            self._velocity[0] += vec.x
-            self._velocity[1] += vec.y
+        # max_speed = -max_speed + speed) * damping
+
+        if self.motor_broken:
+            self._velocity[0] += vec.x * self._speed
+            self._velocity[1] += vec.y * self._speed
+
+        else:
+            self._position[0] += vec.x * self._speed
+            self._position[1] += vec.y * self._speed
 
         self._velocity[0] *= self._damping ** delta
         self._velocity[1] *= self._damping ** delta

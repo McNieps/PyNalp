@@ -1,4 +1,5 @@
 from src.game.menu_objects.map.star import Star
+from src.game.game_objects.level import Level
 
 import pygame
 
@@ -8,7 +9,7 @@ class Sector:
         self._num = num
         self._star = star
         self._depth = depth
-        self.level = None
+        self.level = Level(depth)
         self.lead_to = []
         self.rect = star.rect
 

@@ -165,5 +165,5 @@ def sector_selection(galaxy: Galaxy, player: Player):
 
 if __name__ == '__main__':
     _galaxy = Galaxy()
-    print(sector_selection(_galaxy, Player()))
+    sector_selection(_galaxy, Player())
     pygame.quit()

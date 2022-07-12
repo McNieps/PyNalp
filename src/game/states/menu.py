@@ -110,6 +110,7 @@ def menu():
         # engine.shaders.BlackHoleShader.compute(screen, -0.5)
 
         screen.crop_border()
+        screen.display.blit(engine.resources.images["menu"]["frame"], (0, 0))
         pygame.display.flip()
 
         # endregion

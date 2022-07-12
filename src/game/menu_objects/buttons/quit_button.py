@@ -5,7 +5,7 @@ from src.game.menu_objects.buttons.utils import create_button, click_callback
 import pygame
 
 
-button_pos = 32, 190
+button_pos = 40, 190
 button_size = engine.resources.images["menu"]["button"].get_size()
 
 surf_up = pygame.Surface(button_size)

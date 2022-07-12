@@ -13,7 +13,7 @@ class Level:
 
         # scene
         self.stars = []
-        self.number_of_stars = 10_000
+        self.number_of_stars = 5000
         self.length = 100_000
 
         self._generate_level()
@@ -34,7 +34,7 @@ class Level:
             star_surf = engine.resources.images["environment"][f"star_{star_type}_{star_color}"]
 
             star_pos = random.randint(min_x, max_x), random.randint(min_y, max_y)
-            star_depth = abs(random.gauss(0, 0.5))
+            star_depth = abs(random.gauss(0, 1))
             star_screen_offset = random.randint(-200, 200), random.randint(-150, 150)
 
             star_sprite = engine.scene.Sprite(star_surf, star_pos, star_depth, star_screen_offset)

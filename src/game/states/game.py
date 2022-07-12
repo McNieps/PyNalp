@@ -18,19 +18,8 @@ def game():
 
     for i in range(5):
         sector_selection(galaxy, player)
+        player.reset()
         game_level(player, galaxy.current_sector.level)
-
-
-    # while win and not current_sector.final:
-    #     sector_selection(galaxy_map)
-    #     win = game_level(player, galaxy.current_sector.level)
-
-    # if not win:
-    #     game_over_screen()
-    # else:
-    #     win_screen()
-
-    pass
 
 
 if __name__ == '__main__':

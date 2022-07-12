@@ -3,7 +3,8 @@
     "chti": "chti.png",
     "bench": "bench.png",
     "frog": "frog.jpg",
-    "space": "space.png"
+    "space": "space.png",
+	"smirk": "smirk_snake.png"
   },
   "cursors": {
     "cursor_1": "cursor_1.png",
@@ -40,7 +41,16 @@
     "reac_2": "reac_2.png",
     "reac_3": "reac_3.png",
     "reac_4": "reac_4.png",
-    "reac_5": "reac_5.png"
+    "reac_5": "reac_5.png",
+	"frame": "frame.png"
+  },
+  "loading_screen": {
+	"loading_screen_frame": "loading_screen_frame.png",
+	"anim_1": "anim_1.png",
+	"anim_2": "anim_2.png",
+	"anim_3": "anim_3.png",
+	"anim_4": "anim_4.png",
+	"anim_5": "anim_5.png"
   },
   "environment": {
     "galaxy_1": "galaxy_1.png",
@@ -80,6 +90,7 @@
     "launch_locked": "launch_locked.png"
   },
   "player": {
-    "90L": "90L.png"
+    "90L": "90L.png",
+    "chti_saucer": "chti_saucer.png"
   }
 }

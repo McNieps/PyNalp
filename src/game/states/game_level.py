@@ -6,17 +6,16 @@ import src.engine as engine
 
 from src.game.game_objects.player import Player
 from src.game.game_objects.level import Level
-from src.test.utils import create_classic_sprites
+from src.game.game_objects.wrap import Wrap
 from src.game.states.loading_screen import loading_screen
 
 import pygame
-import threading
+import math
 
 from pygame.locals import *
 
 
 def game_level(player, level):
-    resources = engine.resources
     screen = engine.screen
     loop_handler = engine.loop_handler
 
@@ -29,9 +28,11 @@ def game_level(player, level):
 
     loading_screen(add_stars_to_scene, (level.stars, scene))
 
+    player_camera_multiplier = 0.25
+    wrap = Wrap(20000, 2)
+
     # Main loop
     while loop_handler.is_running():
-        print(loop_handler.get_fps())
         delta = loop_handler.limit_and_get_delta()
 
         # region Events
@@ -41,21 +42,34 @@ def game_level(player, level):
         for event in pygame.event.get():
             if event.type == QUIT:
                 loop_handler.stop_game()
-            elif event.type == KEYDOWN and event.key == K_ESCAPE:
-                loop_handler.stop_loop()
+            elif event.type == KEYDOWN:
+                if event.key == K_ESCAPE:
+                    loop_handler.stop_loop()
+                if event.key == K_RETURN:
+                    wrap.init_wrap()
 
         # endregion
 
+        wrap.compute(delta)
+
         player.handle_key_pressed(key_pressed, delta)
-        camera.position = player.position
-        # print(int(camera.position[0]))
+        player_x, player_y = player.position
+
+        dx, dy = player_x * player_camera_multiplier, player_y * player_camera_multiplier
+
+        player.position[0] += wrap.distance
+        camera.position = dx + wrap.distance, dy
 
         # region Rendering
         screen.fill((13, 43, 69))
         camera.render_fixed_sprites(screen)
         camera.render_mobile_sprites(screen)
 
+        player.position[0] = player_x
+        camera.position = player.position
+
         screen.crop_border()
+        screen.display.blit(engine.resources.images["menu"]["frame"], (0, 0))
         pygame.display.flip()
 
 

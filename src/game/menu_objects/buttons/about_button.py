@@ -6,7 +6,7 @@ from src.game.states.about import about
 import pygame
 
 
-button_pos = 32, 160
+button_pos = 40, 160
 button_size = engine.resources.images["menu"]["button"].get_size()
 
 surf_up = pygame.Surface(button_size)

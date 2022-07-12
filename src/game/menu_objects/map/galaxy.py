@@ -129,7 +129,7 @@ class Galaxy:
 
     def reset(self):
         self._center = [118, 97]
-        self._angle_x = 0
+        # self._angle_x = 0
         self._angle_y = math.radians(30)
         self._scale = 1
 
@@ -233,7 +233,7 @@ class Galaxy:
                 self.sectors.append(sector)
 
         # Adding super secret sector
-        chti_sprite = engine.scene.Sprite(engine.resources.images["sector_selection"]["holy_chti"], (0, 0))
+        chti_sprite = engine.scene.Sprite(engine.resources.images["misc"]["smirk"], (0, 0))
         chti_star = Star((10000, 10000, 5000), chti_sprite)
         chti_sector = Sector(666, 666, chti_star)
         self.sectors.append(chti_sector)
