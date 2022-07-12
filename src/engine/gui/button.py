@@ -197,10 +197,12 @@ class Button:
                 if self.hovered:
                     return
                 self.hovered = True
-                self._hover_callback()
+                if self._hover_callback is not None:
+                    self._hover_callback()
                 return
             else:
-                self._hover_callback()
+                if self._hover_callback is not None:
+                    self._hover_callback()
                 self.hovered = True
                 return
 
@@ -208,6 +210,9 @@ class Button:
 
     def mouse_cheap_hover(self):
         """Method to call all the time if the mouse don't move."""
+
+        if self._hover_callback is None:
+            return
 
         if self._one_time_hover:
             return

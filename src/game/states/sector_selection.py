@@ -10,14 +10,16 @@ if __name__ == '__main__':
 import src.engine as engine
 
 from src.game.menu_objects.map import Galaxy
+from src.game.game_objects.player import Player
 
 import pygame
 import math
 
 from pygame.locals import *
+from typing import Literal
 
 
-def sector_selection(galaxy: Galaxy):
+def sector_selection(galaxy: Galaxy, player: Player):
     resources = engine.resources
     screen = engine.screen
     loop_handler = engine.loop_handler
@@ -44,9 +46,15 @@ def sector_selection(galaxy: Galaxy):
                                       position=button_pos)
     button_locked = engine.scene.Sprite(surface=engine.resources.images["sector_selection"]["launch_locked"],
                                         position=button_pos)
+
     button = engine.gui.Button(button_pos)
-    button.set_mask_from_sprite(button_up, "pressed")
-    button.set_mask_from_sprite(button_down, "released")
+    button_body = pygame.Rect(0, 0, *button_up.surface.get_size())
+    button_body.center = button_pos
+
+    action_types: list[Literal["pressed", "hover", "released"]] = ["pressed", "hover", "released"]
+    for _type in action_types:
+        button.set_body(button_body, _type)
+
     button.set_callback(pressed_callback, "pressed")
     button.set_callback(released_callback, "released")
 
@@ -61,7 +69,6 @@ def sector_selection(galaxy: Galaxy):
 
     # Main loop
     while loop_handler.is_running():
-        # print(loop_handler.get_fps())
         delta = loop_handler.limit_and_get_delta()
 
         # region Events
@@ -144,7 +151,7 @@ def sector_selection(galaxy: Galaxy):
 
         if galaxy.selected_sector is None:
             button_locked.raw_draw(screen)
-        elif button.pressed:
+        elif button.pressed and button.hovered:
             button_down.raw_draw(screen)
         else:
             button_up.raw_draw(screen)
@@ -158,5 +165,5 @@ def sector_selection(galaxy: Galaxy):
 
 if __name__ == '__main__':
     _galaxy = Galaxy()
-    print(sector_selection(_galaxy))
+    print(sector_selection(_galaxy, Player()))
     pygame.quit()

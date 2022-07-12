@@ -69,9 +69,13 @@ class Camera:
                                   sprite: SpriteStyle) -> tuple[int, int]:
         """This method can be used to calculate the position of the sprite on the screen relative to the camera"""
 
-        dx = (sprite.position[0] - self.position[0]) * sprite.depth + self._BLIT_OFFSET[0]
-        dy = (sprite.position[1] - self.position[1]) * sprite.depth + self._BLIT_OFFSET[1]
+        if sprite.raw_pos is None:
+            dx = (sprite.position[0] - self.position[0]) * sprite.depth + self._BLIT_OFFSET[0]
+            dy = (sprite.position[1] - self.position[1]) * sprite.depth + self._BLIT_OFFSET[1]
+            return int(dx), int(dy)
 
+        dx = sprite.raw_pos[0] + self._BLIT_OFFSET[0]
+        dy = sprite.raw_pos[1] + self._BLIT_OFFSET[1]
         return int(dx), int(dy)
 
     def draw_sprite(self,
@@ -126,7 +130,10 @@ class Camera:
             screen: The screen object (engine object)
         """
 
+        sprite = self.scene.mobile_sprites[0]
+        # print(sprite.screen_rect)
         for sprite in self.scene.mobile_sprites:
+            sprite.rect.center = self._adjusted_sprite_position(sprite)
 
             # Check collision with screen
             if sprite.screen_rect.colliderect(sprite.rect):

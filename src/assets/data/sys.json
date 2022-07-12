@@ -4,11 +4,11 @@
     "name": "PyNalp",
     "icon": false,
     "fullscreen": false,
-    "scaled": true,
+    "scaled": false,
     "noframe": false
   },
   "video": {
-    "fps": 60,
+    "fps": 120,
     "ifi": 5
   },
   "audio": {

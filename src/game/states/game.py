@@ -4,17 +4,22 @@ if __name__ == '__main__':
 
 from src.game.states.sector_selection import sector_selection
 from src.game.states.game_level import game_level
+
 from src.game.menu_objects.map.galaxy import Galaxy
+
+from src.game.game_objects.player import Player
 
 
 def game():
     galaxy = Galaxy()
-    # player = Player()
+    player = Player()
+
+    game_level(player, galaxy.current_sector.level)
 
     for i in range(5):
-        sector_selection(galaxy)
+        sector_selection(galaxy, player)
+        game_level(player, galaxy.current_sector.level)
 
-    # win = game_level(player, current_sector)
 
     # while win and not current_sector.final:
     #     sector_selection(galaxy_map)

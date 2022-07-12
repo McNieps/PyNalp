@@ -57,7 +57,8 @@ class Scene:
                              sprite: SpriteStyle,
                              rect: Union[pygame.Rect, None]) -> list[tuple[int, int]]:
         """
-        Return clusters where the sprite is visible. Assume that the sprite will move!
+        Return clusters where the sprite is visible.
+        This method is so fucking slow. TODO rework this. Cython / Numba / ... idk and idc
 
         Args:
             sprite: The sprite to that will be added to the scene
@@ -82,7 +83,6 @@ class Scene:
         max_cluster_j = j_offset + sprite_rect.centery
 
         # If the sprite is moving
-        # Note: weirdground sprite zoning may behave badly, fix it maybe?
         if rect:
             min_cluster_i -= rect.left / sprite_depth
             max_cluster_i += rect.right / sprite_depth

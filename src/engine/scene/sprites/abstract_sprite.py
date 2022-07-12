@@ -2,7 +2,7 @@ import pygame
 
 
 class AbstractSprite:
-    __slots__ = ("position", "depth", "rect", "half_size")
+    __slots__ = ("position", "depth", "rect", "half_size", "raw_pos")
 
     _SCREEN_RECT = pygame.Rect(0, 0, 400, 300)
     _DISPLAY_RECT = pygame.Rect(0, 0, 400, 300)
@@ -15,9 +15,15 @@ class AbstractSprite:
                  raw_pos: tuple[float, float] = None) -> None:
 
         self.position = list(pos)
-        if raw_pos is not None and abs(depth) > self._GLOBAL_DEPTH_THRESHOLD:
-            self.position[0] += raw_pos[0]/depth
-            self.position[1] += raw_pos[1]/depth
+        self.raw_pos = None
+
+        if raw_pos is not None:
+            if abs(depth) > self._GLOBAL_DEPTH_THRESHOLD:
+                self.position[0] += raw_pos[0]/depth
+                self.position[1] += raw_pos[1]/depth
+
+            else:
+                self.raw_pos = raw_pos
 
         self.depth = depth
 
