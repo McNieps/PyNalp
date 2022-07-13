@@ -42,7 +42,9 @@
     "reac_3": "reac_3.png",
     "reac_4": "reac_4.png",
     "reac_5": "reac_5.png",
-	"frame": "frame.png"
+	"frame": "frame.png",
+    "defeat": "defeat.png",
+    "victory": "victory.png"
   },
   "loading_screen": {
 	"loading_screen_frame": "loading_screen_frame.png",
@@ -75,7 +77,11 @@
     "star_5_1": "star_5_1.png",
     "star_5_2": "star_5_2.png",
     "star_6_1": "star_6_1.png",
-    "star_6_2": "star_6_2.png"
+    "star_6_2": "star_6_2.png",
+	"planet_1": "planet_1.png",
+	"planet_2": "planet_2.png",
+	"planet_3": "planet_3.png",
+	"planet_4": "planet_4.png"
   },
   "sector_selection": {
     "background": "background.png",
@@ -100,6 +106,18 @@
     "sling_3": "sling_3.png",
     "paste_1": "paste_1.png",
     "paste_2": "paste_2.png",
-    "paste_3": "paste_3.png"
+    "paste_3": "paste_3.png",
+    "beholder_1": "beholder_1.png",
+    "beholder_2": "beholder_2.png",
+    "beholder_3": "beholder_3.png",
+    "beholder_4": "beholder_4.png",
+    "beholder_5": "beholder_5.png",
+    "beholder_6": "beholder_6.png",
+    "beholder_7": "beholder_7.png",
+    "beholder_8": "beholder_8.png"
+  },
+  "bullet": {
+    "player_bullet": "player_bullet.png",
+	"enemy_bullet": "enemy_bullet.png"
   }
 }

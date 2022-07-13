@@ -9,7 +9,7 @@ class Sector:
         self._num = num
         self._star = star
         self._depth = depth
-        self.level = Level(depth)
+        self.level = Level(depth+1)
         self.lead_to = []
         self.rect = star.rect
 

@@ -5,7 +5,7 @@ Thanks buddy!
 
 if __name__ == '__main__':
     import os
-    os.chdir("../")
+    os.chdir("../../")
 
 import src.engine as engine
 
@@ -14,13 +14,15 @@ import pygame
 from pygame.locals import *
 
 
-def template():
+def victory():
     resources = engine.resources
     screen = engine.screen
     loop_handler = engine.loop_handler
 
     # Initializing the GUI if necessary
     gui = engine.gui.GUI()
+
+    victory_sprite = engine.scene.Sprite(resources.images["menu"]["victory"], (200, 150))
 
     anim_var = {"highlight": 0}
 
@@ -48,14 +50,14 @@ def template():
         # endregion
 
         # region Rendering
-        screen.fill((0, 0, 0))
 
-
+        screen.fill((13, 43, 69))
+        victory_sprite.raw_draw(screen)
 
         screen.crop_border()
         pygame.display.flip()
 
 
 if __name__ == '__main__':
-    template()
+    victory()
     pygame.quit()

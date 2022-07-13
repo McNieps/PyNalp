@@ -1,3 +1,30 @@
 {
-  "click": "click.wav"
+  "click": "click.wav",
+  "player_death": "player_death.wav",
+  "wave_spawn": "wave_spawn.wav",
+  "beholder_death": {
+    "1": "1.wav",
+    "2": "2.wav",
+    "3": "3.wav"
+  },
+  "kami_death": {
+    "1": "1.wav",
+    "2": "2.wav"
+  },
+  "shield": {
+	  "down": "shield_down.wav",
+	  "up": "shield_up.wav"
+  },
+  "shoot": {
+    "shoot_1": "shoot_1.wav",
+    "shoot_2": "shoot_2.wav",
+    "shoot_3": "shoot_3.wav",
+    "shoot_4": "shoot_4.wav"
+  },
+  "enemy_hit": {
+    "1": "hit_1.wav",
+    "2": "hit_2.wav",
+    "3": "hit_3.wav",
+    "4": "hit_4.wav"
+  }
 }

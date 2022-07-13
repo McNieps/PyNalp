@@ -7,6 +7,11 @@ import src.engine as engine
 from src.game.game_objects.player import Player
 from src.game.game_objects.level import Level
 from src.game.game_objects.wrap import Wrap
+from src.game.game_objects.bullet import Bullet
+from src.game.game_objects.enemies.enemy import Enemy
+from src.game.game_objects.enemies.kami import Kami
+from src.game.game_objects.enemies.beholder import Beholder
+
 from src.game.states.loading_screen import loading_screen
 
 import pygame
@@ -21,6 +26,11 @@ def game_level(player, level):
     scene, camera = engine.scene.utils.create_scene_and_camera()
     scene.add_mobile_sprite(player.sprite)
 
+    Bullet.SCENE = scene
+    Enemy.SCENE = scene
+
+    level.generate_level()
+
     def add_stars_to_scene(list_of_stars: list, _scene: engine.scene.Scene):
         for star in list_of_stars:
             _scene.add_fixed_sprite(star)
@@ -29,10 +39,22 @@ def game_level(player, level):
 
     player_camera_multiplier = 0.25
 
-    wrap_distance = 20_000
-    initial_wrap = Wrap(wrap_distance, 5)
-    wrap = Wrap(wrap_distance, 2)
+    # wrap
+    initial_wrap = Wrap(20_000, 0.2)
+    wrap = Wrap(20_000, 2)
     initial_wrap.init_wrap()
+    wrap_delay_after_wave_end = 2
+    time_to_next_wave = 0
+    time_to_wave = 0
+    wave_wait_after_wrap = 1
+    wave_launched = False
+    current_wave = 0
+
+    # arena
+    arena_rect = pygame.Rect(0, 0, 508, 382)
+
+    # bullets
+    wave = []
 
     # Main loop
     while loop_handler.is_running():
@@ -47,24 +69,109 @@ def game_level(player, level):
             elif event.type == KEYDOWN:
                 if event.key == K_ESCAPE:
                     loop_handler.stop_loop()
-                if event.key == K_RETURN:
-                    wrap.init_wrap()
 
         # endregion
 
         # region Computing
+        # Wrapping
+        player_x_without_wrap = player.position[0] - wrap.distance - initial_wrap.distance
         wrap.compute(delta)
         initial_wrap.compute(delta)
+        player.position[0] = player_x_without_wrap + wrap.distance + initial_wrap.distance
 
+        arena_rect.center = (wrap.distance + initial_wrap.distance, 0)
+
+        # Check wave end
+        if len(wave) == 0 and wrap.over:
+            if not wave_launched:
+                time_to_wave += delta
+                if time_to_wave >= wave_wait_after_wrap:
+                    wave_launched = True
+                    time_to_wave = 0
+                    engine.resources.play_sound(("wave_spawn",))
+                    wave = level.waves[current_wave]
+
+            else:
+                time_to_next_wave += delta
+                if time_to_next_wave >= wrap_delay_after_wave_end:
+                    current_wave += 1
+                    time_to_next_wave = 0
+                    wave_launched = False
+
+                    if wrap.distance > 79000:
+                        return
+
+                    Enemy.enemies_bullet_list.clear()
+                    wrap.init_wrap()
+
+        # Player update
         player.handle_key_pressed(key_pressed, delta)
-        player.constrain()
+        player.update(delta)
+        player.constrain(arena_rect)
+        if not player.alive:
+            return
 
-        player_x, player_y = player.position
+        # Enemies update
+        for enemy in wave:
+            enemy.update_surface(delta)
+            enemy.update(delta, player)
 
-        dx, dy = player_x * player_camera_multiplier, player_y * player_camera_multiplier
+        # Friendly bullets update
+        for bullet in Player.player_bullet_list:
+            bullet.update(delta)
 
-        player.position[0] += wrap.distance + initial_wrap.distance
+            if not arena_rect.contains(bullet.rect):
+                bullet.dead = True
+                continue
+
+            for enemy in wave:
+                if bullet.check_collision(enemy):
+                    bullet.dead = True
+                    enemy.on_hit(bullet)
+
+        # Remove dead friendly bullets
+        length = len(Player.player_bullet_list)
+        for i in range(len(Player.player_bullet_list)):
+            index = length-1-i
+
+            bullet = Player.player_bullet_list[index]
+            if bullet.dead:
+                bullet.remove_from_scene()
+                Player.player_bullet_list.pop(index)
+
+        # Enemy bullets update
+        for bullet in Enemy.enemies_bullet_list:
+            bullet.update(delta)
+
+            if not arena_rect.contains(bullet.rect):
+                bullet.dead = True
+                continue
+
+            if not player.invincible and player.rect.colliderect(bullet.rect):
+                bullet.dead = True
+                player.on_hit()
+
+        # Remove dead enemy bullets
+        length = len(Enemy.enemies_bullet_list)
+        for i in range(len(Enemy.enemies_bullet_list)):
+            index = length-1-i
+            bullet = Enemy.enemies_bullet_list[index]
+            if bullet.dead:
+                bullet.remove_from_scene()
+                Enemy.enemies_bullet_list.pop(index)
+
+        # Remove dead enemies
+        for enemy in wave:
+            if enemy.dead:
+                enemy.remove_from_scene()
+                wave.remove(enemy)
+
+        # Camera
+        dx = (player.position[0] - wrap.distance - initial_wrap.distance) * player_camera_multiplier
+        dy = player.position[1] * player_camera_multiplier
         camera.position = dx + wrap.distance + initial_wrap.distance, dy
+
+        print(camera.position)
 
         # endregion
 
@@ -75,29 +182,17 @@ def game_level(player, level):
 
         screen.blit(engine.resources.images["menu"]["frame"], (100, 100))
 
-        # engine.shaders.GrayscaleShader.compute(screen)
-        # engine.shaders.BlackHoleShader.compute(screen, 0.2)
-        # engine.shaders.ChromaticAberrationShader.compute(screen, ((5, 5), (-5, 0), (5, -5)))
-
         screen.crop_border()
 
-        screen.display.blit(engine.resources.images["enemies"]["kami_1"], (100, 100))
-        screen.display.blit(engine.resources.images["enemies"]["sling_3"], (250, 150))
-        pygame.draw.rect(screen.display, (255, 0, 0), (300, 124, 64, 64))
+        # pygame.draw.rect(screen.display, (255, 0, 0), (300, 124, 64, 64))
 
         pygame.display.flip()
-
-        # endregion
-
-        # region Post computing
-        player.position[0] = player_x
-        camera.position = player.position
 
         # endregion
 
 
 if __name__ == '__main__':
     _player = Player()
-    _level = Level(5)
+    _level = Level(1)
     game_level(_player, _level)
     pygame.quit()

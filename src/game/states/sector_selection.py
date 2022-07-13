@@ -5,7 +5,7 @@ Thanks buddy!
 
 if __name__ == '__main__':
     import os
-    os.chdir("../")
+    os.chdir("../../")
 
 import src.engine as engine
 
