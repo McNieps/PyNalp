@@ -20,7 +20,7 @@ import pygame
 print("Hello from the illapsum studio community. https://louis-thuillier.ac-amiens.fr/que-sont-ils-devenus/\n")
 
 # Create the resource_handler
-resources = handlers.ResourceHandler("../assets")
+resources = handlers.ResourceHandler("assets")
 
 # Setting up objects constants
 _utils.init(resources)

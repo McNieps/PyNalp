@@ -37,8 +37,9 @@ class Player:
         self.aux_broken = False
 
         # Position and velocity
-        self._position = [0, 0]
-        self._speed = 125
+        self.starting_x = -100_000
+        self._position = [self.starting_x, 0]
+        self._speed = 175
 
         # If broken
         self._velocity = [0, 0]
@@ -57,8 +58,34 @@ class Player:
         self._position[0] = value[0]
         self._position[1] = value[1]
 
+    def constrain(self):
+        min_x = -243
+        max_x = 245
+        min_y = -182
+        max_y = 183
+
+        if self._position[0] < min_x:
+            dx = min_x - self._position[0]
+            self._position[0] += dx / 2
+            self._velocity[0] *= -0.8
+
+        elif self.position[0] > max_x:
+            dx = max_x - self._position[0]
+            self._position[0] += dx / 2
+            self._velocity[0] *= -0.8
+
+        if self._position[1] < min_y:
+            dy = min_y - self._position[1]
+            self._position[1] += dy / 2
+            self._velocity[1] *= -0.8
+
+        elif self.position[1] > max_y:
+            dy = max_y - self._position[1]
+            self._position[1] += dy / 2
+            self._velocity[1] *= -0.8
+
     def reset(self):
-        self.position = (0, 0)
+        self.position = (self.starting_x, 0)
         self._velocity = [0, 0]
 
     def handle_key_pressed(self, key_pressed: list[int], delta: float):
@@ -91,5 +118,5 @@ class Player:
         self._velocity[0] *= self._damping ** delta
         self._velocity[1] *= self._damping ** delta
 
-        self._position[0] += self._velocity[0]
-        self._position[1] += self._velocity[1]
+        self._position[0] += self._velocity[0] * delta
+        self._position[1] += self._velocity[1] * delta

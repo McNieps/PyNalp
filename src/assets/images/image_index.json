@@ -92,5 +92,14 @@
   "player": {
     "90L": "90L.png",
     "chti_saucer": "chti_saucer.png"
+  },
+  "enemies": {
+    "kami_1": "kami_1.png",
+    "sling_1": "sling_1.png",
+    "sling_2": "sling_2.png",
+    "sling_3": "sling_3.png",
+    "paste_1": "paste_1.png",
+    "paste_2": "paste_2.png",
+    "paste_3": "paste_3.png"
   }
 }

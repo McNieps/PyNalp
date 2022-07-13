@@ -1,6 +1,6 @@
 if __name__ == '__main__':
     import os
-    os.chdir("../")
+    os.chdir("../../")
 
 import src.engine as engine
 
@@ -104,10 +104,6 @@ def menu():
             button_dict["sprite_down"].raw_draw(screen)
             if button_dict["button"].hovered:
                 highlight_sprite(button_dict["sprite_up"], int(anim_var["highlight"]))
-
-        # engine.shaders.GrayscaleShader.compute(screen)
-        # engine.shaders.ChromaticAberrationShader.compute(screen, ((5, 5), (-5, 0), (5, -5)))
-        # engine.shaders.BlackHoleShader.compute(screen, -0.5)
 
         screen.crop_border()
         screen.display.blit(engine.resources.images["menu"]["frame"], (0, 0))

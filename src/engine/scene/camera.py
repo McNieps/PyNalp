@@ -83,7 +83,6 @@ class Camera:
                     surface: pygame.Surface) -> None:
         """This method can be used to draw a sprite into the screen"""
 
-        # return screen.blit(sprite.surface, self.adjusted_sprite_position(sprite))
         sprite.draw(surface, self._adjusted_sprite_position(sprite))
 
     def render_fixed_sprites(self,
@@ -119,7 +118,6 @@ class Camera:
 
             for sprite in sprites:
                 self.draw_sprite(sprite, screen)
-                # sprite.draw(screen.surface, self.adjusted_sprite_position(sprite))
 
     def render_mobile_sprites(self,
                               screen: Screen):
@@ -130,8 +128,6 @@ class Camera:
             screen: The screen object (engine object)
         """
 
-        sprite = self.scene.mobile_sprites[0]
-        # print(sprite.screen_rect)
         for sprite in self.scene.mobile_sprites:
             sprite.rect.center = self._adjusted_sprite_position(sprite)
 

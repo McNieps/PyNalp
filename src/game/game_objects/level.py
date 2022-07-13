@@ -1,5 +1,7 @@
 import src.engine as engine
 
+from src.game.game_objects.wave import Wave
+
 import pygame
 import random
 
@@ -7,20 +9,26 @@ import random
 class Level:
     MAX_PLAYER_INDUCED_OFFSET = (40, 30)
 
-    def __init__(self, difficulty: float):
+    def __init__(self, difficulty: int):
         self.difficulty = difficulty
-        self.number_of_events = 5
+        self.number_of_waves = 5
+
+        # level
+        self.waves = []
 
         # scene
         self.stars = []
-        self.number_of_stars = 5000
+        self.number_of_stars = 500
         self.length = 100_000
 
         self._generate_level()
         self._generate_scene()
 
     def _generate_level(self):
-        pass
+        for i in range(self.number_of_waves):
+            wave = Wave(self.difficulty)
+
+            self.waves.append(wave)
 
     def _generate_scene(self):
         min_x = int(-self.MAX_PLAYER_INDUCED_OFFSET[0]/2)

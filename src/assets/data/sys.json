@@ -8,8 +8,7 @@
     "noframe": false
   },
   "video": {
-    "fps": 120,
-    "ifi": 5
+    "fps": 120
   },
   "audio": {
     "base_volume": 0.5,
