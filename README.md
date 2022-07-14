@@ -14,3 +14,6 @@ https://lospec.com/palette-list/slso8
 Big big thanks to Simon little feets for the help!
 
 Thanks for playing!
+
+
+McNiëps#7925
