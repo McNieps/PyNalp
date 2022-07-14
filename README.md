@@ -3,10 +3,10 @@
 This game was done for the 2022 pygame summer jam.
 
 # Controls
-w to move up
-a to move left
-s to move down
-d to move right
+w to move up  
+a to move left  
+s to move down  
+d to move right  
 
 K_RETURN to shoot
 
