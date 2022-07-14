@@ -146,9 +146,10 @@ def game_level(player, level):
                 bullet.dead = True
                 continue
 
-            if not player.invincible and player.rect.colliderect(bullet.rect):
+            if player.rect.colliderect(bullet.rect):
                 bullet.dead = True
-                player.on_hit()
+                if not player.invincible:
+                    player.on_hit()
 
         # Remove dead enemy bullets
         length = len(Enemy.enemies_bullet_list)

@@ -17,17 +17,17 @@ class Beholder(Enemy):
         self.speed = 30
         self.min_dist = 100
         self.max_dist = 120
-        self.health = 50
+        self.health = 40
 
         # Shoot
         self.over = False
-        self.firing_duration = 5
+        self.firing_duration = random.randint(1, 3)
         self.firing_since = 0
         self.firing_cooldown = 4
-        self.number_of_bullets = 100
+        self.number_of_bullets = 80
         self.seconds_per_bullet = self.firing_duration / self.number_of_bullets
         self.leftover = 0.0
-        self.bullet_speed = 150
+        self.bullet_speed = 130
 
     def update(self, delta, player):
         dx = player.position[0] - self.position[0]

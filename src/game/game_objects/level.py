@@ -31,7 +31,7 @@ class Level:
 
             match self.difficulty:
                 case 1:
-                    for _ in range(random.randint(2, 4)):
+                    for _ in range(random.randint(3, 5)):
                         wave_list.append(Kami(wave_pos + random.randint(100, 150), random.randint(-180, 180)))
 
                 case 2:
@@ -46,24 +46,24 @@ class Level:
                         wave_list.append(Beholder(wave_pos + random.randint(100, 150), random.randint(-180, 180)))
 
                 case 4:
-                    for _ in range(random.randint(5, 7)):
+                    for _ in range(random.randint(7, 8)):
                         wave_list.append(Kami(wave_pos + random.randint(100, 150), random.randint(-180, 180)))
 
-                    for _ in range(2):
+                    for _ in range(1):
                         wave_list.append(Beholder(wave_pos + random.randint(100, 150), random.randint(-180, 180)))
 
                 case 5:
                     for _ in range(random.randint(5, 7)):
                         wave_list.append(Kami(wave_pos + random.randint(100, 150), random.randint(-180, 180)))
 
-                    for _ in range(3):
+                    for _ in range(2):
                         wave_list.append(Beholder(wave_pos + random.randint(100, 150), random.randint(-180, 180)))
 
                 case 6:
-                    for _ in range(6):
+                    for _ in range(5, 8):
                         wave_list.append(Kami(wave_pos + random.randint(100, 150), random.randint(-180, 180)))
 
-                    for _ in range(4):
+                    for _ in range(2):
                         wave_list.append(Beholder(wave_pos + random.randint(100, 150), random.randint(-180, 180)))
 
             self.waves.append(wave_list)
