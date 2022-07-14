@@ -1,15 +1,17 @@
 # PyNalp
-
 This game was done for the 2022 pygame summer jam.
 
 # Controls
-w to move up  
-a to move left  
-s to move down  
-d to move right  
+K_w to move up  
+K_a to move left  
+K_s to move down  
+K_d to move right  
 
-K_RETURN to shoot
+K_return (enter) to shoot
 
+
+# Note
+The game may crash because attempted to blit but the surface was lock. I don't understand, it's a rare occurrence. Check about, if it doesn't crash, you're fine!
 
 # Credits
 
@@ -24,7 +26,6 @@ https://lospec.com/palette-list/slso8
 
 Big big thanks to Simon little feets for the help!
 
-Thanks for playing!
+Thanks you for playing!
 
-
-McNiëps#7925
+Made by McNiëps#7925
