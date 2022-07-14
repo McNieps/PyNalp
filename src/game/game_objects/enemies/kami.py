@@ -5,7 +5,7 @@ from src.game.game_objects.bullet import Bullet
 
 import pygame
 import math
-
+import random
 
 class Kami(Enemy):
     def __init__(self, x, y, vx=0, vy=0):
@@ -17,7 +17,7 @@ class Kami(Enemy):
         self.velocity[1] = vy
         self.speed = 80
 
-        self.health = 15
+        self.health = random.randint(8, 10)
         self.number_of_bullet = 20
         self.bullet_speed = 66
 

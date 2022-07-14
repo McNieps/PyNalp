@@ -9,8 +9,6 @@ from src.game.game_objects.level import Level
 from src.game.game_objects.wrap import Wrap
 from src.game.game_objects.bullet import Bullet
 from src.game.game_objects.enemies.enemy import Enemy
-from src.game.game_objects.enemies.kami import Kami
-from src.game.game_objects.enemies.beholder import Beholder
 
 from src.game.states.loading_screen import loading_screen
 
@@ -40,7 +38,7 @@ def game_level(player, level):
     player_camera_multiplier = 0.25
 
     # wrap
-    initial_wrap = Wrap(20_000, 0.2)
+    initial_wrap = Wrap(20_000, 5)
     wrap = Wrap(20_000, 2)
     initial_wrap.init_wrap()
     wrap_delay_after_wave_end = 2
@@ -53,7 +51,7 @@ def game_level(player, level):
     # arena
     arena_rect = pygame.Rect(0, 0, 508, 382)
 
-    # bullets
+    # Waves
     wave = []
 
     # Main loop
@@ -66,9 +64,6 @@ def game_level(player, level):
         for event in pygame.event.get():
             if event.type == QUIT:
                 loop_handler.stop_game()
-            elif event.type == KEYDOWN:
-                if event.key == K_ESCAPE:
-                    loop_handler.stop_loop()
 
         # endregion
 
@@ -99,6 +94,8 @@ def game_level(player, level):
                     wave_launched = False
 
                     if wrap.distance > 79000:
+                        Player.player_bullet_list.clear()
+                        Enemy.enemies_bullet_list.clear()
                         return
 
                     Enemy.enemies_bullet_list.clear()
@@ -109,6 +106,8 @@ def game_level(player, level):
         player.update(delta)
         player.constrain(arena_rect)
         if not player.alive:
+            Player.player_bullet_list.clear()
+            Enemy.enemies_bullet_list.clear()
             return
 
         # Enemies update
@@ -170,8 +169,6 @@ def game_level(player, level):
         dx = (player.position[0] - wrap.distance - initial_wrap.distance) * player_camera_multiplier
         dy = player.position[1] * player_camera_multiplier
         camera.position = dx + wrap.distance + initial_wrap.distance, dy
-
-        print(camera.position)
 
         # endregion
 
