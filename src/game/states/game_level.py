@@ -77,7 +77,7 @@ def game_level(player, level):
         arena_rect.center = (wrap.distance + initial_wrap.distance, 0)
 
         # Check wave end
-        if len(wave) == 0 and wrap.over:
+        if len(wave) == 0 and wrap.over and initial_wrap.over:
             if not wave_launched:
                 time_to_wave += delta
                 if time_to_wave >= wave_wait_after_wrap:

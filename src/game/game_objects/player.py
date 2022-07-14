@@ -29,7 +29,7 @@ action_controls = {"shoot": K_RETURN}
 
 
 class Player:
-    MOVE_CONTROLS = move_controls_azerty
+    MOVE_CONTROLS = move_controls_qwerty
     ACTION_CONTROLS = action_controls
 
     player_bullet_list = []
