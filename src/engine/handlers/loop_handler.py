@@ -3,41 +3,39 @@ import sys
 
 
 class LoopHandler:
-    MAX_FPS = 60
-    AVG_DELTA = 1 / MAX_FPS
+    """A very, very clever class to handle anything related to game clock."""
 
-    def __init__(self,
-                 max_fps=None):
-        """A very, very clever class to handle anything related to game clock."""
+    run = True
 
-        self.clock = pygame.time.Clock()
-        self.run = True
+    max_fps = 60
 
-        self.max_fps = max_fps
-        if max_fps is None:
-            self.max_fps = self.MAX_FPS
+    average_delta = 1 / max_fps
+    delta = 0
 
-        self.delta = 0  # 1 / self.MAX_FPS
+    clock = pygame.time.Clock()
 
-    def is_running(self):
-        if self.run:
+    @classmethod
+    def is_running(cls):
+        if cls.run:
             return True
 
-        self.run = True
+        cls.run = True
         return False
 
-    def stop_loop(self):
-        self.run = False
+    @classmethod
+    def stop_loop(cls):
+        cls.run = False
 
-    def stop_game(self):
-        self.run = False
-
+    @classmethod
+    def stop_game(cls):
         pygame.quit()
         sys.exit()
 
-    def limit_and_get_delta(self):
-        self.delta = self.clock.tick(self.max_fps) / 1000
-        return self.delta
+    @classmethod
+    def limit_and_get_delta(cls):
+        cls.delta = cls.clock.tick(cls.max_fps) / 1000
+        return cls.delta
 
-    def get_fps(self):
-        return self.clock.get_fps()
+    @classmethod
+    def get_fps(cls):
+        return cls.clock.get_fps()

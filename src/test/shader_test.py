@@ -4,11 +4,9 @@ import pygame
 
 from pygame.locals import *
 from random import randint
-from time import time
 
 
-def create_classic_sprites(_scene: engine.scene.Scene,
-                           _resources: engine.handlers.ResourceHandler) -> None:
+def create_classic_sprites(_scene: engine.scene.Scene) -> None:
 
     sprite_nb = 1000
     min_x, max_x = -1000, 1000
@@ -16,7 +14,7 @@ def create_classic_sprites(_scene: engine.scene.Scene,
     min_d, max_d = 0, 2
 
     for _ in range(sprite_nb):
-        surface = _resources.images["cursors"][f"cursor_{randint(1, 6)}"]
+        surface = engine.resources.images["cursors"][f"cursor_{randint(1, 6)}"]
         pos = randint(min_x, max_x), randint(min_y, max_y)
         depth = randint(min_d*10000, max_d*10000) / 10000
         raw_pos = randint(-200, 200), randint(-150, 150)
@@ -26,8 +24,7 @@ def create_classic_sprites(_scene: engine.scene.Scene,
         _scene.add_fixed_sprite(new_sprite)
 
 
-def create_shader_sprites(_scene: engine.scene.Scene,
-                          _resources: engine.handlers.ResourceHandler) -> None:
+def create_shader_sprites(_scene: engine.scene.Scene) -> None:
 
     sprite_nb = 10
     min_x, max_x = -1000, 1000
@@ -35,7 +32,7 @@ def create_shader_sprites(_scene: engine.scene.Scene,
     min_d, max_d = 0, 2
 
     for _ in range(sprite_nb):
-        shader = _resources.shaders["grayscale"]
+        shader = engine.shaders.GrayscaleShader
         pos = randint(min_x, max_x), randint(min_y, max_y)
         depth = randint(min_d*10000, max_d*10000) / 10000
         raw_pos = randint(-200, 200), randint(-150, 150)
@@ -47,35 +44,23 @@ def create_shader_sprites(_scene: engine.scene.Scene,
                                                depth=depth,
                                                raw_pos=raw_pos)
 
-        print(new_sprite.screen_rect)
-
         _scene.add_fixed_sprite(new_sprite)
         _scene.add_fixed_sprite(new_sprite)
 
 
 def main():
+    loop_handler = engine.loop_handler
     resources = engine.resources
     screen = engine.screen
-
-    loop_handler = engine.handlers.LoopHandler()
 
     # Scene
     camera_speed = 400
     scene, camera = engine.scene.create_scene_and_camera()
-    create_classic_sprites(scene, resources)
-    create_shader_sprites(scene, resources)
+    create_classic_sprites(scene)
+    create_shader_sprites(scene)
     background_sprite = engine.scene.Sprite(surface=resources.images["misc"]["frog"], position=(0, 0), depth=0)
     scene.add_fixed_sprite(background_sprite)
     scene.order()
-
-    # Shaders
-    shaders_keys = list(resources.shaders.keys())
-    shaders_index = 0
-    shaders_values = [3, 5, ((10, 10), (0, 0), (-10, -10)), 5]
-    shaders_strength = 5
-    t = time()
-    # resources.shaders["blackhole"].pre_gen_shader_map([500], [i/10 for i in range(100)])
-    print(time()-t)
 
     # Main loop
     while loop_handler.is_running():
@@ -89,14 +74,6 @@ def main():
             elif event.type == KEYDOWN:
                 if event.key == K_ESCAPE:
                     loop_handler.stop_game()
-                elif event.key == K_UP:
-                    shaders_index = (shaders_index + 1) % len(shaders_keys)
-                elif event.key == K_DOWN:
-                    shaders_index = (shaders_index - 1) % len(shaders_keys)
-                elif event.key == K_LEFT:
-                    shaders_strength -= 1
-                elif event.key == K_RIGHT:
-                    shaders_strength += 1
 
         key_pressed = pygame.key.get_pressed()
         speed = camera_speed * delta
@@ -108,18 +85,20 @@ def main():
             camera.y += speed
         if key_pressed[K_z]:
             camera.y -= speed
-        if key_pressed[K_LEFT]:
-            shaders_strength -= 10 * delta
-        if key_pressed[K_RIGHT]:
-            shaders_strength += 10 * delta
 
         screen.fill((255, 0, 0))
         camera.render_fixed_sprites(screen)
         # resources.shaders[shaders_keys[shaders_index]].compute(screen, shaders_values[shaders_index])
         screen.crop_border()
+
+        display_array = pygame.surfarray.pixels3d(screen.display)
+        engine.shaders.CRT.compute(display_array, 0, 0, 0)
+        del display_array
+
         pygame.display.flip()
 
 
 if __name__ == '__main__':
+    engine.init("../../assets")
     main()
     pygame.quit()

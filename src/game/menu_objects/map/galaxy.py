@@ -129,7 +129,6 @@ class Galaxy:
 
     def reset(self):
         self._center = [118, 97]
-        # self._angle_x = 0
         self._angle_y = math.radians(30)
         self._scale = 1
 
@@ -269,7 +268,6 @@ class Galaxy:
         for star in self._stars:
             star.draw(self._center, self._scale, cos_x, sin_x, cos_y, sin_y, self.surface)
 
-    # TODO rework this
     def draw_accessible(self):
         cos_x, sin_x = math.cos(self._angle_x), math.sin(self._angle_x)
         cos_y, sin_y = math.cos(self._angle_y), math.sin(self._angle_y)
@@ -294,7 +292,6 @@ class Galaxy:
                 self._draw_line_between_sector(self.selected_sector, dest_sector, (255, 236, 214), width=2)
 
     def draw_indicators(self):
-
         # Draw current position indicator
         self.position_sprite.position = (self.current_sector.position[0],
                                          self.current_sector.position[1] - 17)
@@ -326,7 +323,7 @@ class Galaxy:
 
         self.draw_all_paths()       # Show all paths
         if can_hover:
-            self.hover(mouse_pos)   # Show path of hovered sector (easier to see that draw_all_paths
+            self.hover(mouse_pos)   # Show path of hovered sector (easier to see that draw_all_paths)
         self.draw_possible_paths()  # Draw current possibles paths and selected sector possibles paths
 
         self.draw_accessible()      # Draw sectors

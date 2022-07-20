@@ -15,7 +15,7 @@ def main():
     scene, camera = engine.scene.create_scene_and_camera()
 
     # Add stars to the scene and order them
-    utils.create_classic_sprites(scene, resources)
+    utils.create_classic_sprites(scene)
     frog = engine.scene.Sprite(resources.images["misc"]["frog"], (0, 0), depth=0.4)
     scene.add_fixed_sprite(frog)
     scene.order()
@@ -58,5 +58,6 @@ def main():
 
 
 if __name__ == '__main__':
+    engine.init("../../assets")
     main()
     pygame.quit()

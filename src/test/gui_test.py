@@ -1,5 +1,4 @@
 import src.engine as engine
-import src.test.utils as utils
 
 from src.engine.gui.typing import ValidMouseAction
 
@@ -10,15 +9,14 @@ from pygame.locals import *
 
 # Main loop function
 def main():
+    loop_handler = engine.loop_handler
     resources = engine.resources
     screen = engine.screen
 
-    loop_handler = engine.handlers.LoopHandler()
     scene, camera = engine.scene.create_scene_and_camera()
-
     gui = engine.gui.GUI()
-    buttons_sprites = []
 
+    buttons_sprites = []
     for i in range(1000):
         for j in range(5):
             button = engine.gui.Button(pressed_when_released=True, one_time_hover=True)
@@ -36,7 +34,7 @@ def main():
 
     # Main loop
     while loop_handler.is_running():
-        delta = loop_handler.limit_and_get_delta()
+        # delta = loop_handler.limit_and_get_delta()
         pygame.display.set_caption(f"FPS: {loop_handler.get_fps()}")
 
         # region Events
@@ -50,8 +48,6 @@ def main():
             if event.type == MOUSEBUTTONUP and event.button == 1:
                 gui.mouse_released()
         gui.update()
-
-        utils.move_camera(camera, delta)
 
         # endregion
 
@@ -70,5 +66,6 @@ def main():
 
 
 if __name__ == '__main__':
+    engine.init("../../assets")
     main()
     pygame.quit()

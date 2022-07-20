@@ -15,9 +15,9 @@ from pygame.locals import *
 
 
 def defeat():
+    loop_handler = engine.loop_handler
     resources = engine.resources
     screen = engine.screen
-    loop_handler = engine.loop_handler
 
     # Initializing the GUI if necessary
     gui = engine.gui.GUI()

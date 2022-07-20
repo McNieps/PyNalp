@@ -8,10 +8,10 @@ from pygame.locals import *
 
 # Main loop function
 def main():
+    loop_handler = engine.loop_handler
     resources = engine.resources
     screen = engine.screen
 
-    loop_handler = engine.handlers.LoopHandler()
     scene, camera = engine.scene.create_scene_and_camera()
 
     # Main loop
@@ -41,5 +41,6 @@ def main():
 
 
 if __name__ == '__main__':
+    engine.init("../../assets")
     main()
     pygame.quit()

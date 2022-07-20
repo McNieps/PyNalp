@@ -5,16 +5,13 @@ import pygame
 from typing import Callable
 
 
-hl_surf = [engine.resources.images["menu"][f"hl_{i}"] for i in range(1, 6)]
-
-hl_sprites = [engine.scene.Sprite(hl_surf[i], (0, 0)) for i in range(5)]
-
-
 def highlight_sprite(sprite_to_highlight: engine.scene.Sprite,
                      state: int) -> None:
 
-    hl_sprites[state].position = sprite_to_highlight.position
-    hl_sprites[state].raw_draw(engine.screen)
+    hl_sprite = engine.scene.Sprite(engine.resources.images["menu"][f"hl_{state+1}"], (0, 0))
+
+    hl_sprite.position = sprite_to_highlight.position
+    hl_sprite.raw_draw(engine.screen)
 
 
 def click_callback():

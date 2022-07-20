@@ -1,14 +1,6 @@
-if __name__ == '__main__':
-    import os
-    os.chdir("../../")
-
 import src.engine as engine
 
-from src.game.menu_objects.buttons import play_button_dict
-from src.game.menu_objects.buttons import options_button_dict
-from src.game.menu_objects.buttons import about_button_dict
-from src.game.menu_objects.buttons import quit_button_dict
-from src.game.menu_objects.buttons import highlight_sprite
+from src.game.menu_objects.buttons import create_play_button, create_about_button, create_quit_button, highlight_sprite
 
 import pygame
 
@@ -23,9 +15,9 @@ def menu():
     loop_handler = engine.loop_handler
 
     # Initializing the GUI
-    button_dicts = [play_button_dict,
-                    about_button_dict,
-                    quit_button_dict]    # options_button_dict,
+    button_dicts = [create_play_button(),
+                    create_about_button(),
+                    create_quit_button()]
 
     gui = engine.gui.GUI()
     for button_dict in button_dicts:
@@ -41,9 +33,9 @@ def menu():
 
             stars.append(star_sprite)
 
-    menu_warship = engine.scene.Sprite(resources.images["menu"]["warship"], (200, 150))
+    menu_warship = engine.scene.Sprite(resources.images["menu"]["warship"], (0, 0))
     menu_planet = engine.scene.Sprite(resources.images["menu"]["planet"], (200, 275))
-    menu_clouds = engine.scene.Sprite(resources.images["menu"]["clouds"], (200, 285))
+    menu_clouds = engine.scene.Sprite(resources.images["menu"]["clouds"], (0, 0))
     menu_title = engine.scene.Sprite(resources.images["menu"]["title"], (200, 30))
     menu_reac_1 = engine.scene.Sprite(resources.images["menu"]["reac_1"], (0, 0))
     menu_reac_2 = engine.scene.Sprite(resources.images["menu"]["reac_1"], (0, 0))
@@ -114,5 +106,6 @@ def menu():
 
 
 if __name__ == '__main__':
+    engine.init("../../../assets")
     menu()
     pygame.quit()

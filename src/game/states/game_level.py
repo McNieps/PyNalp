@@ -18,8 +18,9 @@ from pygame.locals import *
 
 
 def game_level(player, level):
-    screen = engine.screen
     loop_handler = engine.loop_handler
+    resources = engine.resources
+    screen = engine.screen
 
     scene, camera = engine.scene.utils.create_scene_and_camera()
     scene.add_mobile_sprite(player.sprite)

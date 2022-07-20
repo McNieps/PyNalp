@@ -1,12 +1,3 @@
-"""
-This is just a template. There won't be any use for this script / module in the real game
-Thanks buddy!
-"""
-
-if __name__ == '__main__':
-    import os
-    os.chdir("../../")
-
 import src.engine as engine
 
 from src.game.menu_objects.map import Galaxy
@@ -96,6 +87,7 @@ def sector_selection(galaxy: Galaxy, player: Player):
             elif event.type == MOUSEBUTTONUP and event.button == 1:
                 gui.mouse_released()
 
+            # Zoom in / Zoom out
             elif mouse_in_map and event.type == MOUSEWHEEL:
                 if event.y > 0:
                     for i in range(event.y):
@@ -164,6 +156,7 @@ def sector_selection(galaxy: Galaxy, player: Player):
 
 
 if __name__ == '__main__':
+    engine.init("../../../assets")
     _galaxy = Galaxy()
     sector_selection(_galaxy, Player())
     pygame.quit()

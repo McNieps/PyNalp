@@ -1,15 +1,10 @@
-"""
-TODO explain how the game works, what assets I did end up using (like font, palette, ...), software
-TODO explain that the easter exists / don't exists
-"""
-
 if __name__ == '__main__':
     import os
     os.chdir("../")
 
 import src.engine as engine
 
-from src.game.menu_objects.buttons.return_button import return_button_dict
+from src.game.menu_objects.buttons.return_button import create_return_button
 from src.game.menu_objects.buttons.utils import highlight_sprite
 
 import pygame
@@ -18,18 +13,18 @@ from pygame.locals import *
 
 
 def about():
+    loop_handler = engine.loop_handler
     resources = engine.resources
     screen = engine.screen
-    loop_handler = engine.loop_handler
 
     # blur the screen
     engine.shaders.BlurShader.compute(screen, 2)
     engine.shaders.BlurShader.compute(screen, 2)
 
     # Initializing the GUI if necessary
-    button_dicts = [return_button_dict]
+    button_dicts = [create_return_button()]
     gui = engine.gui.GUI()
-    gui.add_element(return_button_dict["button"])
+    gui.add_element(button_dicts[0]["button"])
 
     about_sprite = engine.scene.Sprite(resources.images["menu"]["about_page"], (200, 150))
 

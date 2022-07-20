@@ -1,10 +1,10 @@
 from src.engine.shaders.abstract_shader import AbstractShader
 from src.engine.typing import rect_style, surfarray_style
 
-from numba import njit
-
 import pygame
 import numpy as np
+
+from numba import njit
 
 
 class BlurShader(AbstractShader):

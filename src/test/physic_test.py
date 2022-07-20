@@ -11,12 +11,12 @@ from math import degrees
 
 # Main loop function
 def main():
+    loop_handler = engine.loop_handler
     resources = engine.resources
     screen = engine.screen
 
-    loop_handler = engine.handlers.LoopHandler()
     scene, camera = engine.scene.create_scene_and_camera()
-    utils.create_classic_sprites(scene, resources)
+    utils.create_classic_sprites(scene)
 
     space = pymunk.Space()
     space.gravity = (0, 1000)
@@ -97,5 +97,6 @@ def main():
 
 
 if __name__ == '__main__':
+    engine.init("../../assets")
     main()
     pygame.quit()

@@ -9,7 +9,7 @@ if __name__ == '__main__':
 
 import src.engine as engine
 
-from src.game.menu_objects.buttons.return_button import return_button_dict
+from src.game.menu_objects.buttons.return_button import create_return_button
 from src.game.menu_objects.buttons.utils import highlight_sprite
 
 import pygame
@@ -23,9 +23,9 @@ def options():
     loop_handler = engine.loop_handler
 
     # Initializing the GUI if necessary
-    button_dicts = [return_button_dict]
+    button_dicts = [create_return_button()]
     gui = engine.gui.GUI()
-    gui.add_element(return_button_dict["button"])
+    gui.add_element(button_dicts[0]["button"])
 
     highlight_state = 0
 
@@ -55,10 +55,10 @@ def options():
         # region Rendering
         screen.fill((0, 0, 0))
 
-        screen.blit(resources.write("This is the options",
-                                    (255, 255, 255),
-                                    font_name="Square",
-                                    font_size=45),
+        screen.blit(resources.render_text("This is the options",
+                                          (255, 255, 255),
+                                          font_name="Square",
+                                          font_size=45),
                     (100, 100))
 
         for button_dict in button_dicts:

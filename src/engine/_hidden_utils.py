@@ -27,54 +27,55 @@ def create_screen(size: tuple[int, int],
     return screen
 
 
-def init(resource_handler: handlers.ResourceHandler):
-    shaders_max_size = resource_handler.fetch_data(["sys", "shaders", "max_size"])
-    shaders_enabled = resource_handler.fetch_data(["sys", "shaders", "enabled"])
+def init():
+    shaders_max_size = handlers.ResourceHandler.data["sys"]["shaders"]["max_size"]
+    shaders_enabled = handlers.ResourceHandler.data["sys"]["shaders"]["enabled"]
     if shaders_enabled is not True:
         shaders_max_size = 0
 
-    init_gui(resource_handler)
-    init_handlers(resource_handler)
-    init_physics(resource_handler)
-    init_scene(resource_handler)
-    init_shaders(resource_handler)
+    init_gui()
+    init_handlers()
+    init_physics()
+    init_scene()
+    init_shaders()
 
     # Screen constants
     Screen.SHADERS_ENABLED = shaders_enabled
     Screen.SHADERS_MAX_SIZE = shaders_max_size
 
 
-def init_gui(resource_handler: handlers.ResourceHandler):
+def init_gui():
     """Init gui objects."""
 
-    screen_size = resource_handler.fetch_data(["sys", "window", "size"])
-    shaders_max_size = resource_handler.fetch_data(["sys", "shaders", "max_size"])
-    shaders_enabled = resource_handler.fetch_data(["sys", "shaders", "enabled"])
+    screen_size = handlers.ResourceHandler.data["sys"]["window"]["size"]
+    shaders_max_size = handlers.ResourceHandler.data["sys"]["shaders"]["max_size"]
+    shaders_enabled = handlers.ResourceHandler.data["sys"]["shaders"]["enabled"]
 
     if shaders_enabled:
         gui.Button._DISPLAY_RECT = pygame.Rect(shaders_max_size, shaders_max_size, *screen_size)
 
 
-def init_handlers(resource_handler: handlers.ResourceHandler):
+def init_handlers():
     """Init handlers objects."""
 
     # LoopHandler constants
-    handlers.LoopHandler.MAX_FPS = resource_handler.fetch_data(["sys", "video", "fps"])
+    handlers.LoopHandler.MAX_FPS = handlers.ResourceHandler.data["sys"]["video"]["fps"]
 
 
-def init_physics(resource_handler: handlers.ResourceHandler):
+def init_physics():
     """Init physics objects."""
 
     pass
 
 
-def init_scene(resource_handler: handlers.ResourceHandler):
-    screen_size = resource_handler.fetch_data(["sys", "window", "size"])
-    shaders_max_size = resource_handler.fetch_data(["sys", "shaders", "max_size"])
-    shaders_enabled = resource_handler.fetch_data(["sys", "shaders", "enabled"])
+def init_scene():
+    """Init scene objects."""
+    screen_size: tuple[int, int] = handlers.ResourceHandler.data["sys"]["window"]["size"]
+    shaders_max_size: int = handlers.ResourceHandler.data["sys"]["shaders"]["max_size"]
+    shaders_enabled: bool = handlers.ResourceHandler.data["sys"]["shaders"]["enabled"]
 
     # Scene object
-    scene.Scene._SCREEN_SIZE = resource_handler.fetch_data(["sys", "window", "size"])
+    scene.Scene._SCREEN_SIZE = handlers.ResourceHandler.data["sys"]["window"]["size"]
     scene.Scene._INV_SCREEN_SIZE = (1 / screen_size[0],
                                     1 / screen_size[1])
     scene.Scene._SHADERS_ENABLED = shaders_enabled
@@ -105,8 +106,6 @@ def init_scene(resource_handler: handlers.ResourceHandler):
                                                   screen_size[1]+shaders_max_size*2)
 
 
-def init_shaders(resource_handler: handlers.ResourceHandler):
-    resource_handler.shaders = {"blackhole": shaders.BlackHoleShader,
-                                "blur": shaders.BlurShader,
-                                "chromatic": shaders.ChromaticAberrationShader,
-                                "grayscale": shaders.GrayscaleShader}
+def init_shaders():
+    """Init shaders objects."""
+    pass
