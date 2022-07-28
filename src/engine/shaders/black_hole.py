@@ -6,6 +6,7 @@ import numpy as np
 from itertools import product
 from numba import njit, prange
 from typing import Iterable
+from sys import getrefcount
 
 
 @njit(parallel=True, fastmath=True, cache=True)
@@ -41,20 +42,12 @@ def compute_black_hole(input_array: np.ndarray,
     if input_array is output_array:
         input_array = input_array.copy()
 
-    print(shader_map.shape)
-    print(shader_map.dtype)
-
     size = shader_map.shape[0]
-    start_x = max(0, min(zone[0], size))
-    start_y = max(0, min(zone[1], size))
-    end_x = max(0, min(zone[0] + zone[2], size))
-    end_y = max(0, min(zone[1] + zone[3], size))
-    print(size)
-    print(start_x)
-    print(start_y)
-    print(end_x)
-    print(end_y)
-    print(zone)
+    max_x, max_y = input_array.shape[:2]
+    start_x = max(0, min(zone[0], max_x))
+    start_y = max(0, min(zone[1], max_y))
+    end_x = max(0, min(zone[0] + zone[2], max_x))
+    end_y = max(0, min(zone[1] + zone[3], max_y))
 
     input_array = input_array[start_x: end_x, start_y: end_y]
     output_array = output_array[start_x: end_x, start_y: end_y]
@@ -100,8 +93,8 @@ class BlackHoleShader(AbstractShader):
 
         size = min(*rect_array[2:])
 
-        # rect_array[0] += (rect_array[2]-size)/2
-        # rect_array[1] += (rect_array[3]-size)/2
+        rect_array[0] += (rect_array[2]-size)/2
+        rect_array[1] += (rect_array[3]-size)/2
         rect_array[2:] = size
 
         shader_map = cls._get_shader_map(size, intensity)
@@ -110,6 +103,8 @@ class BlackHoleShader(AbstractShader):
                      values=shader_map,
                      rect_array=rect_array,
                      output_array=output_array)
+
+        del input_array, output_array
 
     @classmethod
     def _get_shader_map(cls,
