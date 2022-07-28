@@ -8,5 +8,5 @@ from typing import Union
 
 
 # Typing
-rect_style = Union[pygame.Rect, tuple[int, int, int, int]]
-surfarray_style = Union[pygame.Surface, np.ndarray]
+RectStyle = Union[pygame.Rect, tuple[int, int, int, int]]
+SurfArrayStyle = Union[pygame.Surface, np.ndarray]

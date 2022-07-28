@@ -312,8 +312,8 @@ class Galaxy:
         blur_kernel_radius = 5
         self.draw_galaxy()
         self.draw_background()
-        engine.shaders.BlurShader.compute(self.surface, blur_kernel_radius)
-        engine.shaders.BlurShader.compute(self.surface, blur_kernel_radius)
+        engine.shaders.BlurShader.shade(self.surface, blur_kernel_radius)
+        engine.shaders.BlurShader.shade(self.surface, blur_kernel_radius)
 
         # Drawing sharp background and galaxy
         self.draw_background()

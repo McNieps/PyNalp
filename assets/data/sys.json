@@ -8,7 +8,7 @@
     "noframe": false
   },
   "video": {
-    "fps": 60
+    "fps": 1200
   },
   "audio": {
     "base_volume": 0.5,

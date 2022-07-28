@@ -18,8 +18,8 @@ def about():
     screen = engine.screen
 
     # blur the screen
-    engine.shaders.BlurShader.compute(screen, 2)
-    engine.shaders.BlurShader.compute(screen, 2)
+    engine.shaders.BlurShader.shade(screen, 2)
+    engine.shaders.BlurShader.shade(screen, 2)
 
     # Initializing the GUI if necessary
     button_dicts = [create_return_button()]

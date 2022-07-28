@@ -59,7 +59,7 @@ def init_handlers():
     """Init handlers objects."""
 
     # LoopHandler constants
-    handlers.LoopHandler.MAX_FPS = handlers.ResourceHandler.data["sys"]["video"]["fps"]
+    handlers.LoopHandler.max_fps = handlers.ResourceHandler.data["sys"]["video"]["fps"]
 
 
 def init_physics():

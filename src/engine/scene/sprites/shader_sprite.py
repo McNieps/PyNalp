@@ -60,6 +60,7 @@ class ShaderSprite(AbstractSprite):
             return
 
         sub_surface = surface.subsurface(self.rect)  # negligible
+
         sub_array = pygame.surfarray.pixels3d(sub_surface)  # negligible
 
-        self.shader.compute(sub_array, self.shader_value)  # TODO rework this
+        self.shader.shade(sub_array, self.shader_value)

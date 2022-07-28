@@ -57,9 +57,9 @@ def main():
     camera_speed = 400
     scene, camera = engine.scene.create_scene_and_camera()
     create_classic_sprites(scene)
-    create_shader_sprites(scene)
-    background_sprite = engine.scene.Sprite(surface=resources.images["misc"]["frog"], position=(0, 0), depth=0)
-    scene.add_fixed_sprite(background_sprite)
+    # create_shader_sprites(scene)
+    # background_sprite = engine.scene.Sprite(surface=resources.images["misc"]["frog"], position=(0, 0), depth=0)
+    # scene.add_fixed_sprite(background_sprite)
     scene.order()
 
     # Main loop
@@ -86,14 +86,18 @@ def main():
         if key_pressed[K_z]:
             camera.y -= speed
 
-        screen.fill((255, 0, 0))
+        screen.fill((35, 25, 70))
+
         camera.render_fixed_sprites(screen)
-        # resources.shaders[shaders_keys[shaders_index]].compute(screen, shaders_values[shaders_index])
+        # engine.shaders.ChromaticAberrationShader.shade(screen, ((4, -2), (0, 4), (-4, -2)), (225, 225, 50, 50))
+        # engine.shaders.BlurShader.shade(screen, 2)
+        # engine.shaders.GrayscaleShader.shade(screen)
+        engine.shaders.BlackHoleShader.shade(screen, 1)
         screen.crop_border()
 
-        display_array = pygame.surfarray.pixels3d(screen.display)
-        engine.shaders.CRT.compute(display_array, 0, 0, 0)
-        del display_array
+        # display_array = pygame.surfarray.pixels3d(screen.display)
+        # engine.shaders.CRT.compute(display_array, 0, 0, 0)
+        # del display_array
 
         pygame.display.flip()
 
