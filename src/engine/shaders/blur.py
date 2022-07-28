@@ -1,48 +1,9 @@
 from src.engine.shaders.abstract_shader import AbstractShader
-from src.engine.typing import rect_style, surfarray_style
+from src.engine.typing import RectStyle, SurfArrayStyle
 
-import pygame
 import numpy as np
 
 from numba import njit
-
-
-class BlurShader(AbstractShader):
-    @classmethod
-    def compute(cls,
-                input_array: surfarray_style,
-                kernel_radius: int,
-                rect: rect_style = None,
-                output_array: surfarray_style = None) -> None:
-        """
-        Method used to blur a surface using stack-blur algorithm.
-
-        Args:
-            input_array: A numpy array or a pygame surface that contain information to shade.
-            kernel_radius: A int representing the kernel radius. The kernel size is equal to 2*kernel_radius+1
-            rect: A rect style argument that describe the zone to shade. Default to the whole array.
-            output_array: A numpy array or a pygame surface that will receive the shaded array.
-                Default to the input_array.
-        """
-
-        if kernel_radius < 1:
-            return
-
-        if isinstance(input_array, pygame.Surface):
-            input_array = pygame.surfarray.pixels3d(input_array)
-
-        if output_array is None:
-            output_array = input_array
-
-        if rect is None:
-            rect = (0,
-                    0,
-                    *input_array.shape[:2])
-
-        compute_stack_blur(input_array=input_array,
-                           kernel_radius=kernel_radius,
-                           zone=np.array(rect),
-                           output_array=output_array)
 
 
 @njit(fastmath=True, cache=True)
@@ -116,3 +77,35 @@ def compute_stack_blur(input_array: np.ndarray,
                                + intermediate_array[i, j_add, c]\
                                - intermediate_array[i, j_rem, c]
                 output_array[i, j, c] = div_map[pixel_sum[c]]
+
+
+class BlurShader(AbstractShader):
+    INIT_VALUE = 1
+    FUNC = compute_stack_blur
+
+    @classmethod
+    def shade(cls,
+              input_surfarray: SurfArrayStyle,
+              kernel_radius: int,
+              rect: RectStyle = None,
+              output_surfarray: SurfArrayStyle = None) -> None:
+        """
+        Method used to blur a surface using stack-blur algorithm.
+
+        Args:
+            input_surfarray: A numpy array or a pygame surface that contain information to shade.
+            kernel_radius: A int representing the kernel radius. The kernel size is equal to 2*kernel_radius+1
+            rect: A rect style argument that describe the zone to shade. Default to the whole array.
+            output_surfarray: A numpy array or a pygame surface that will receive the shaded array.
+                Default to the input_array.
+        """
+
+        input_array, values, rect_array, output_array = cls._adapt_args(input_surfarray,
+                                                                        kernel_radius,
+                                                                        rect,
+                                                                        output_surfarray)
+
+        cls._compute(input_array=input_array,
+                     values=values,
+                     rect_array=rect_array,
+                     output_array=output_array)
